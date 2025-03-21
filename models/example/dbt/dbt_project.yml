@@ -1,0 +1,79 @@
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'HRDP'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'default'
+
+# These configurations specify where dbt should look for different types of files.
+# The `source-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"  # directory which will store compiled SQL files
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+vars:
+ DBT_STAGING_DB: 'HRDP_STG_QA_DB'
+ DBT_LANDING_DB: 'HRDP_LND_QA_DB'
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+# In this example config, we tell dbt to build all models in the example/ directory
+# as tables. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
+models:
+  HRDP:
+    # Applies to all files under models/example/
+    sdds_staging:
+      +database: |
+        {%- if  target.name == "DV" -%} HRDP_STG_DV_DB
+        {%- elif  target.name == "QA" -%} HRDP_STG_QA_DB
+        {%- elif  target.name == "NP" -%} HRDP_STG_NP_DB
+        {%- elif  target.name == "PD" -%} HRDP_STG_PD_DB
+        {%- else  -%} HRDP_STG_DV_DB
+        {%- endif -%}
+      +schema: |
+        {%- if  target.name == "IDE" -%} {{target.schema}}
+        {%- else  -%} SDDS_STG_SCH
+        {%- endif -%}
+snapshots:
+    staging:
+    +transient: true
+    +target_schema: |
+          {%- if  target.name == "IDE" -%} {{target.schema}}
+          {%- else  -%} SDDS_STG_SCH
+          {%- endif -%}
+    +target_database: |
+          {%- if  target.name == "DV" -%} HRDP_STG_DV_DB
+          {%- elif  target.name == "QA" -%} HRDP_STG_QA_DB
+          {%- elif  target.name == "NP" -%} HRDP_STG_NP_DB
+          {%- elif  target.name == "PD" -%} HRDP_STG_PD_DB
+          {%- else  -%} HRDP_STG_DV_DB
+          {%- endif -%}
+seeds:
+    +transient: true
+    +schema: |
+          {%- if  target.name == "IDE" -%} {{target.schema}}
+          {%- else  -%} SDDS_LND_SCH
+          {%- endif -%}
+    +database: |
+          {%- if  target.name == "DV" -%} HRDP_LND_DV_DB
+          {%- elif  target.name == "QA" -%} HRDP_LND_QA_DB
+          {%- elif  target.name == "NP" -%} HRDP_LND_NP_DB
+          {%- elif  target.name == "PD" -%} HRDP_LND_PD_DB
+          {%- else  -%} HRDP_LND_DV_DB
+          {%- endif -%}
+tests:
+    +severity: error
+    error_if: ">10"

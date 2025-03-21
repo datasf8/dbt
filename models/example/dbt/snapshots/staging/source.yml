@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: landing_tables_SDDS
+    description: 'Landing tables are defined here'
+    database: "{{ env_var('DBT_LANDING_DB') }}"
+    schema: "{{ env_var('DBT_LANDING_SDDS_SCH') }}"
+    tables:
+      - name: FORMAUDITTRAILS
+      - name: FORMHEADER
+      - name: FORMOBJCOMPSUMMARYSECTION
+      - name: FORMSUMMARYSECTION
+      - name: FORMCUSTOMSECTION
+      - name: FORM_HEADER_DELETED_FULL
+      - name: PARAM_FORMS_YEARS
