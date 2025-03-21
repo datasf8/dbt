@@ -1,0 +1,2 @@
+dbt run-operation csrd_sp --args "{'MONTH_REF': 202408, 'COUNTRY_CODE': 'USA'}"
+dbt build --select state:modified+,tag:DAR_Role_Mapping
