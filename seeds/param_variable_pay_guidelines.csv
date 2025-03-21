@@ -1,0 +1,23 @@
+RATING,MIN_GUIDELINES,MAX_GUIDELINES,YEAR,GUIDELINE_RANGE,GUIDELINE_RATING_LABEL
+1,0,70,2022,0%-70%,Does not achieve expectations
+2,71,95,2022,71%-95%,Partially achieves expectations
+3,96,105,2022,96%-105%,Achieves Expectations
+4,106,115,2022,106%-115%,Exceeds Expectations
+5,116,125,2022,116%-125%,Outstanding
+unrated,100,100,2022,100%-100%,unrated
+Too New to Rate,100,100,2022,100%-100%,Too New To Rate
+1,0,70,2023,0%-70%,Does not achieve expectations
+2,71,95,2023,71%-95%,Partially achieves expectations
+3,96,105,2023,96%-105%,Achieves Expectations
+4,106,115,2023,106%-115%,Exceeds Expectations
+5,116,125,2023,116%-125%,Outstanding
+unrated,100,100,2023,100%-100%,unrated
+Too New to Rate,100,100,2023,100%-100%,Too New To Rate
+1,0,70,2024,0%-70%,Does not achieve expectations
+2,71,95,2024,71%-95%,Partially achieves expectations
+3,96,105,2024,96%-105%,Achieves Expectations
+4,106,115,2024,106%-115%,Exceeds Expectations
+5,116,125,2024,116%-125%,Outstanding
+unrated,100,100,2024,100%-100%,unrated
+Too New to Rate,100,100,2024,100%-100%,Too New To Rate
+-1,

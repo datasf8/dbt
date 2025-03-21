@@ -1,0 +1,29 @@
+RANGE_CODE,RANGE_TYPE,RANGE,RANGE_INF,RANGE_SUP
+1,Age,< 20 years,0,239
+2,Age,From 20 to 25 years,240,299
+3,Age,From 25 to 35 years,300,419
+4,Age,From 35 to 45 years,420,539
+5,Age,From 45 to 55 years,540,659
+6,Age,From 55 to 60 years,660,719
+7,Age,From 60 to 65 years,720,779
+8,Age,>65 years,780,99999
+9,Group,< 6 months,0,5
+10,Group,6 to 12 months,6,11
+11,Group,1 to 3 years,12,35
+12,Group,3 to 8 years,36,95
+13,Group,8 to 15 years,96,179
+14,Group,>15 years,180,9999
+15,Job,< 6 months,0,5
+16,Job,6 to 12 months,6,11
+17,Job,1 to 3 years,12,35
+18,Job,3 to 8 years,36,95
+19,Job,8 to 15 years,96,179
+20,Job,>15 years,180,9999
+21,Payout,<70%,-1,70
+22,Payout,70%-80%,70,80
+23,Payout,80%-90%,80,90
+24,Payout,90%-100%,90,100
+25,Payout,100%-110%,100,110
+26,Payout,110%-120%,110,120
+27,Payout,120%-130%,120,130
+28,Payout,>130%,130,9999

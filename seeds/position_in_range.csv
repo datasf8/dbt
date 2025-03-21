@@ -1,0 +1,7 @@
+POSITION_IN_RANGE_CODE,POSITION_IN_RANGE_LABEL
+1,Above Range
+2,High
+3,Mid
+4,Low
+5,Below range
+6,NULL
