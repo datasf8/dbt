@@ -1,0 +1,1 @@
+select * from {{ ref('dim_employee_manager_hierarchy_vw') }} where level ='1'
