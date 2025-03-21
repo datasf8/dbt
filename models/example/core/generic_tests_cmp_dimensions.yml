@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: dim_employee
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - empl_person_id_external_empl
+            - EMPL_DT_BEGIN_EMPL
+            - EMPL_ASSIGNMENT_CLASS_EMPL
+    columns:
+      - name: empl_person_id_external_empl
+        tests:
+          - not_null
+  - name: dim_organization
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ORGN_POSITION_CODE_ORGN
+            - ORGN_DT_BEGIN_ORGN
+    columns:
+      - name: ORGN_POSITION_CODE_ORGN
+        tests:
+          - not_null
+  - name: dim_job_architecture
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - JOAR_JOB_ROLE_CODE_JOAR
+            - JOAR_DT_BEGIN_JOAR
+    columns:
+      - name: JOAR_JOB_ROLE_CODE_JOAR
+        tests:
+          - not_null
+  - name: dim_all_players
+    columns:
+      - name: PLAY_ID_PLAY
+        tests:
+          - unique
+          - not_null
+  - name: dim_gender
+    columns:
+      - name: GEND_CODE_GEND
+        tests:
+          - unique
+          - not_null
+  - name: dim_campaign
+    columns:
+      - name: DCAM_ID_CAMPAIGN_DCAM
+        tests:
+          - unique
+          - not_null
+  - name: dim_flag_conformed_to_guidance
+    columns:
+      - name: DFCG_CD_FG_CONFORMED_TO_GUIDANCE_DFCG
+        tests:
+          - unique
+          - not_null
+  - name: dim_flag_increase
+    columns:
+      - name: DFIN_CD_FG_INCREASE_DFIN
+        tests:
+          - unique
+          - not_null
+  - name: dim_flag_promotion
+    columns:
+      - name: DFPR_CD_FG_PROMOTION_DFPR
+        tests:
+          - unique
+          - not_null
+  - name: dim_group_seniority
+    columns:
+      - name: dgrs_range_code_dgrs
+        tests:
+          - unique
+          - not_null
+  - name: dim_position_in_range
+    columns:
+      - name: DPIR_ID_POSITION_IN_RANGE_DPIR
+        tests:
+          - unique
+          - not_null
+  - name: dim_ratings
+    columns:
+      - name: DYER_PK_DYER
+        tests:
+          - unique
+          - not_null
+  - name: dim_date
+    columns:
+      - name: DDTE_PK_DDTE
+        tests:
+          - unique
+          - not_null
