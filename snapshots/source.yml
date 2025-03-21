@@ -1,0 +1,107 @@
+version: 2
+
+sources:
+  - name: landing_tables_CMN
+    description: 'Landing tables are defined here FOR COMMON'
+    database: "{{ env_var('DBT_LANDING_DB') }}"
+    schema: "{{ env_var('DBT_LANDING_CMN_SCH') }}"
+    tables:
+        - name:  PICKLIST_V2
+        - name:  PICKLIST_VALUE_V2
+        - name:  FO_BUSINESS_UNIT
+        - name:  FO_JOB_FUNCTION
+        - name:  CUST_BRAND
+        - name:  FO_LOCATION_GROUP
+        - name:  CURRENCY
+        - name:  FO_DIVISION
+        - name:  FO_DEPARTMENT
+        - name:  FO_COMPANY
+        - name:  CUST_US_JOBCODE
+        - name:  FO_COST_CENTER
+        - name:  CUST_SPECIALIZATION
+        - name:  COUNTRY
+        - name:  FO_EVENT_REASON
+        - name:  FO_LOCATION
+        - name:  PER_PHONE
+        - name:  PER_EMAIL
+        - name:  EMP_EMPLOYEMENT_TERMINATION
+        - name:  FO_PAYCOMPONENT_GROUP
+        - name:  FO_PAY_COMPONENT
+        - name:  EMP_COMPENSATION
+        - name:  EMP_PAYCOMP_RECURRING
+        - name:  EMP_PAYCOMP_NONRECURRING
+        - name:  CUST_GLOBAL_LTI_HISTORY
+        - name:  CUST_LOCAL_LTI_HISTORY
+        - name:  CUST_PARENT_ESOP
+        - name:  CUST_ESOP
+        - name:  FO_PAY_RANGE
+        - name:  FO_GEOZONE
+        - name:  POSITION
+        - name:  CUST_EMPLOYEE_SUBGROUP
+        - name:  PER_PERSON
+        - name:  EMP_JOB
+        - name:  EMP_EMPLOYEMENT
+        - name:  POSITION_MATRIX_RELATIONSHIP
+        - name:  CUST_LOCAL_PAYGRADE
+        - name:  PER_PERSONAL
+        - name:  POSITION_RIGHT_TO_RETURN
+        - name:  FO_PAY_GRADE
+        - name:  CUST_OPERATIONAL_AREA
+        - name:  CUST_SCOPE_TYPE
+        - name:  CUST_EMPLOYEE_GROUP
+        - name:  FO_JOB_CODE
+        - name:  ONB2_BUDDY_ACTIVITY
+        - name:  TIME_ACCOUNT_DETAIL
+        - name:  WF_REQUEST_PARTICIPATOR
+        - name:  ONB2_PROCESS_TRIGGER
+        - name:  BACKGROUND_CUSTCAREERASP
+        - name:  CUST_ACKNOWLEDGEMENT
+        - name:  BACKGROUND_EDUCATION
+        - name:  TIME_ACCOUNT_SNAPSHOT
+        - name:  WF_REQUEST_STEP
+        - name:  FORM_CONTENT
+        - name:  BACKGROUND_LANGUAGES
+        - name:  BACKGROUND_AWARDS
+        - name:  TIMETYPE_PROFILE
+        - name:  ONB2_PROCESS_TASK
+        - name:  FO_PAY_COMPONENT_GROUP
+        - name:  FO_FREQUENCY
+        - name:  CUST_ACKNOWLEDGEMENT_LIST
+        - name:  TIME_ACCOUNT
+        - name:  USER
+        - name:  FORM_HEADER
+        - name:  ONB2_PROCESS
+        - name:  TIME_ACCOUNT_TYPE
+        - name:  ONBOARDING_INFO
+        - name:  BACKGROUND_OUTSIDEWORKEXPERIENCE
+        - name:  TIME_TYPE
+        - name:  EMPLOYEE_TIME
+        - name:  PER_GLOBAL_INFO_USA
+        - name:  PHOTO
+        - name:  CUST_PLTF_WW_ACK_FORMS
+        - name:  CUST_PLTF_WW_ACK_MODELS
+        - name:  JOB_EXECUTION_LOG
+        - name:  CUST_SUBTERMINATIONREASON
+        - name:  WORKSCHEDULEDAYMODEL
+        - name:  WORKSCHEDULEDAYMODELASSIGNMENT
+        - name:  CUST_GROUPCOSTCENTER
+        - name:  HOLIDAYASSIGNMENT
+        - name:  HOLIDAYCATEGORY
+        - name:  WORKSCHEDULE
+        - name:  HOLIDAYCALENDAR
+        - name:  WORKSCHEDULEDAY
+        - name:  EMPGLOBALASSIGNMENT
+        - name:  CUST_ACKNOWLEDGEMENT_V2
+        - name:  FOPAYGROUP
+        - name:  COMPLIANCEPROCESS
+        - name:  ONB2DATACOLLECTIONUSERCONFIG
+        - name:  ONB2EQUIPMENTACTIVITY
+        - name:  COMPLIANCEPROCESSTASK
+        - name:  CUST_LOCALPAYGRADEOBJECT
+
+  - name: data_quality_sdds
+    description: 'hrdp data quality database tables'
+    database: "HRDP_DATAQUALITY_{{ env_var('DBT_REGION') }}_DB"
+    schema: "DQ_SHARED_SCH"
+    tables:
+        - name:  FINANCE_ORGANIZATIONAL_STRUCTURE
