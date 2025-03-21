@@ -1,0 +1,293 @@
+{{ 
+  config
+  (
+    materialized="incremental",
+    unique_key="1",
+    transient=false,
+    incremental_strategy="delete+insert",
+    on_schema_change="sync_all_columns",
+post_hook = "  
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column PE_PG_RATING_LABEL_MASK set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING  
+using (PE_PG_RATING_LABEL_MASK, EMP_ID);
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column BG_RATING_LABEL_MASK set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING  
+using (BG_RATING_LABEL_MASK, EMP_ID);
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column OR_RATING_LABEL_MASK set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING  
+using (OR_RATING_LABEL_MASK, EMP_ID);
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column PG_RATING_LABEL_MASK set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING 
+using (PG_RATING_LABEL_MASK, EMP_ID);
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column PE_BG_RATING_LABEL_MASK set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING 
+using (PE_BG_RATING_LABEL_MASK, EMP_ID);
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column PE_OR_RATING_LABEL_MASK set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING 
+using (PE_OR_RATING_LABEL_MASK, EMP_ID);
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column YE_PG_RATING_LABEL_MASK set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING 
+using (YE_PG_RATING_LABEL_MASK, EMP_ID);
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column YE_BG_RATING_LABEL_MASK set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING 
+using (YE_BG_RATING_LABEL_MASK, EMP_ID);
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column YE_OR_RATING_LABEL_MASK set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING 
+using (YE_OR_RATING_LABEL_MASK, EMP_ID);
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column YE_MANAGER_COMMENTS set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING 
+using (YE_MANAGER_COMMENTS, EMP_ID);
+
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column YE_EMPLOYEE_COMMENTS set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING 
+using (YE_EMPLOYEE_COMMENTS, EMP_ID);
+
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column SGN_EMPLOYEE_COMMENTS set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING
+using (SGN_EMPLOYEE_COMMENTS, EMP_ID);
+
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column SGN_MANAGER_COMMENTS set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING  
+using (SGN_MANAGER_COMMENTS, EMP_ID);
+
+alter table {{ env_var('DBT_CORE_DB') }}.PMG_CORE_SCH.YE_FORM_ATTRIBUTES 
+modify column PE_MANAGER_COMMENTS set masking policy {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.PMGM_RATING_COL_MASKING 
+using (PE_MANAGER_COMMENTS, EMP_ID);
+
+USE DATABASE {{ env_var('DBT_CORE_DB') }};use schema CMN_CORE_SCH;
+call rls_policy_apply_sp('{{ database }}','{{ schema }}','YE_FORM_ATTRIBUTES');
+"
+)
+  }}
+   WITH YE_FORMS AS
+(
+SELECT distinct
+EMP.EMPLOYEE_KEY as EMP_SK,
+DEP.EMPLOYEE_KEY as MGR_SK,
+EMP_ID ,
+DEP.EMPLOYEE_ID as MANAGER_ID,
+FORMDATA_ID,
+FORM_TITLE,
+IS_FORM_LAUNCHED,
+FORM_STATUS,
+case when YE_PG_RATING <>'-1'  then YE_PG_RATING else PE_PG_RATING end as PG_RATING,
+case when YE_PG_RATING <>'-1'  then YE_PG_RATING_LABEL else PE_PG_RATING_LABEL end as PG_RATING_LABEL,
+case when YE_PG_RATING <>'-1'  then YE_PG_RATING_LABEL else PE_PG_RATING_LABEL end as PG_RATING_LABEL_MASK,
+case when YE_BG_RATING <>'-1'  then YE_BG_RATING else PE_BG_RATING end as BG_RATING,
+case when YE_BG_RATING <>'-1'  then YE_BG_RATING_LABEL else PE_BG_RATING_LABEL end as BG_RATING_LABEL,
+case when YE_BG_RATING <>'-1'  then YE_BG_RATING_LABEL else PE_BG_RATING_LABEL end as BG_RATING_LABEL_MASK,
+
+case when YE_OR_RATING <>'-1'  then YE_OR_RATING else PE_OR_RATING end as OR_RATING,
+case when YE_OR_RATING <>'-1'  then YE_OR_RATING_LABEL else PE_OR_RATING_LABEL end as OR_RATING_LABEL,
+case when YE_OR_RATING <>'-1'  then YE_OR_RATING_LABEL else PE_OR_RATING_LABEL end as OR_RATING_LABEL_MASK,
+CASE WHEN PG_RATING IN(-1, 6, 7) and BG_RATING IN(-1, 6, 7) THEN NULL 
+     WHEN OR_RATING BETWEEN PG_RATING AND BG_RATING OR OR_RATING BETWEEN BG_RATING AND PG_RATING THEN 'GREEN'
+     ELSE 'RED' END AS NB_OVERALL_RATINGS,
+PE_PG_RATING,
+PE_PG_RATING_LABEL,
+PE_PG_RATING_LABEL AS PE_PG_RATING_LABEL_MASK,
+PE_BG_RATING,
+PE_BG_RATING_LABEL,
+PE_BG_RATING_LABEL AS PE_BG_RATING_LABEL_MASK,
+PE_OR_RATING,
+PE_OR_RATING_LABEL,
+PE_OR_RATING_LABEL AS PE_OR_RATING_LABEL_MASK,
+PE_MANAGER_COMMENTS,
+PE_LMDATE,
+YE_PG_RATING,
+YE_PG_RATING_LABEL,
+YE_PG_RATING_LABEL AS YE_PG_RATING_LABEL_MASK,
+YE_BG_RATING,
+YE_BG_RATING_LABEL,
+YE_BG_RATING_LABEL AS YE_BG_RATING_LABEL_MASK,
+YE_OR_RATING,
+YE_OR_RATING_LABEL,
+YE_OR_RATING_LABEL AS YE_OR_RATING_LABEL_MASK,
+YE_CONVERSATION_DATE,
+YE_LMDATE,
+YE_MANAGER_LMDATE,
+YE_MANAGER_COMMENTS,
+YE_EMPLOYEE_LMDATE,
+YE_EMPLOYEE_COMMENTS,
+null as YE_MATRIX_MANAGER_LMDATE,
+null as YE_MATRIX_MANAGER_COMMENTS,
+SGN_EMPLOYEE_COMMENTS,
+SGN_MANAGER_COMMENTS,
+SGN_EMP_SIGN,
+SGN_EMPLOYEE_LMDATE,
+SGN_EMPLOYEE_DATE,
+SGN_MANAGER_SIGN,
+SGN_MANAGER_LMDATE,
+SGN_MANAGER_DATE,
+case when SGN_EMP_SIGN = 'TRUE'THEN 'Yes' ELSE 'No' end as SGN_EMPSIGN,
+case when SGN_MANAGER_SIGN = 'TRUE'THEN 'Yes' ELSE 'No' end as SGN_MGRSIGN,
+null as SGN_COMPLETED_LMDATE,
+null as SGN_COMPLETED_CONTENT_ID,
+DPFY_YEAR_DPFY AS YEAR,
+Case When PG_RATING IS NOT NULL And PG_RATING <> 6 And PG_RATING <> -1 Then 'Yes' Else 'No' End As "Manager Rating People Goals",
+Case When BG_RATING IS NOT NULL And BG_RATING <> 6 And BG_RATING <> -1 Then 'Yes' Else 'No' End As "Manager Rating Business Goals",
+Case When OR_RATING IS NOT NULL And OR_RATING <> 6 And OR_RATING <> -1  Then 'Yes' Else 'No' End As "Manager Rating Progress in the Job Goals",
+Case When LENGTH(PE_MANAGER_COMMENTS) > 0 Then 'Yes' Else 'No' End As "Manager Rating comment for HR",
+Case When LENGTH(YE_MANAGER_COMMENTS) > 0 Then 'Yes' Else 'No' End As "Manager Year End comment",
+Case When LENGTH(YE_EMPLOYEE_COMMENTS) > 0 Then 'Yes' Else 'No' End As "Employee Year End comment"
+from (select * from {{ ref('fact_ye_form_vw') }} where FORMDATA_STATUS <>'4') FYFV
+Inner join {{ ref('dim_employee_profile_vw') }} EMP
+ON EMP_ID = EMP.EMPLOYEE_ID
+LEFT OUTER JOIN {{ ref('rel_employee_managers') }} MGR
+ON MGR.REEM_EMPLOYEE_PROFILE_KEY_DDEP=EMP.EMPLOYEE_ID
+LEFT OUTER JOIN {{ ref('dim_employee_profile_vw') }} DEP
+ON MGR.REEM_FK_MANAGER_KEY_DDEP=DEP.EMPLOYEE_ID
+LEFT OUTER JOIN
+{{ ref('dim_param_forms_year') }} DPFY
+ON DPFY.DPFY_FORM_TEMPLATE_ID_DPFY = FYFV.FORM_TEMPLATE_ID
+
+UNION
+
+SELECT distinct
+EMP.EMPLOYEE_KEY as EMP_SK,
+DEP.EMPLOYEE_KEY as MGR_SK,
+FYEF_EMPLOYEE_ID_FYEF as EMP_ID ,
+DEP.EMPLOYEE_ID as MANAGER_ID,
+FYEF_FORMDATA_ID_FYEF as FORMDATA_ID,
+FYEF_FORM_NAME_FYEF as FORM_TITLE,
+FYEF_IS_FORM_LAUNCHED_FYEF as IS_FORM_LAUNCHED,
+FYEF_FORM_STATUS_FYEF as FORM_STATUS,
+case when FYEF_YE_PG_RATING_KEY_DYER <>'-1'  then FYEF_YE_PG_RATING_KEY_DYER else FYEF_PE_PG_RATING_KEY_DYER end as PG_RATING,
+case when FYEF_YE_PG_RATING_KEY_DYER <>'-1'  then YE_PG_RATING_LB else PE_PG_RATING_LB end as PG_RATING_LABEL,
+case when FYEF_YE_PG_RATING_KEY_DYER <>'-1'  then YE_PG_RATING_LB else PE_PG_RATING_LB end as PG_RATING_LABEL_MASK,
+case when fyef_ye_bg_rating_key_dyer <>'-1'  then fyef_ye_bg_rating_key_dyer else FYEF_PE_BG_RATING_KEY_DYER end as BG_RATING,
+case when fyef_ye_bg_rating_key_dyer <>'-1'  then YE_BG_RATING_LB else PE_BG_RATING_LB end as BG_RATING_LABEL,
+case when fyef_ye_bg_rating_key_dyer <>'-1'  then YE_BG_RATING_LB else PE_BG_RATING_LB end as BG_RATING_LABEL_MASK,
+case when fyef_ye_or_rating_key_dyer <>'-1'  then fyef_ye_or_rating_key_dyer else FYEF_PE_OR_RATING_KEY_DYER end as OR_RATING,
+case when fyef_ye_or_rating_key_dyer <>'-1'  then ye_oa_rating_lb else PE_OA_RATING_LB end as OR_RATING_LABEL,
+case when fyef_ye_or_rating_key_dyer <>'-1'  then ye_oa_rating_lb else PE_OA_RATING_LB end as OR_RATING_LABEL_MASK,
+CASE WHEN PG_RATING IN(-1, 6, 7) and BG_RATING IN(-1, 6, 7) THEN NULL 
+     WHEN OR_RATING BETWEEN PG_RATING AND BG_RATING OR OR_RATING BETWEEN BG_RATING AND PG_RATING THEN 'GREEN'
+     ELSE 'RED' END AS NB_OVERALL_RATINGS,
+FYEF_PE_PG_RATING_KEY_DYER as PE_PG_RATING,
+PE_PG_RATING_LB as PE_PG_RATING_LABEL,
+PE_PG_RATING_LB AS PE_PG_RATING_LABEL_MASK,
+FYEF_PE_BG_RATING_KEY_DYER as PE_BG_RATING,
+PE_BG_RATING_LB as PE_BG_RATING_LABEL,
+PE_BG_RATING_LB AS PE_BG_RATING_LABEL_MASK,
+FYEF_PE_OR_RATING_KEY_DYER as PE_OR_RATING,
+PE_OA_RATING_LB as PE_OR_RATING_LABEL,
+PE_OA_RATING_LB AS PE_OR_RATING_LABEL_MASK,
+FYEF_PE_MANAGER_COMMENTS_FYEF as PE_MANAGER_COMMENTS,
+FYEF_PE_LMDATE_FYEF as PE_LMDATE,
+fyef_ye_pg_rating_key_dyer as YE_PG_RATING,
+ye_pg_rating_lb as YE_PG_RATING_LABEL,
+ye_pg_rating_lb AS YE_PG_RATING_LABEL_MASK,
+fyef_ye_bg_rating_key_dyer as YE_BG_RATING,
+ye_bg_rating_lb as YE_BG_RATING_LABEL,
+ye_bg_rating_lb as  YE_BG_RATING_LABEL_MASK,
+fyef_ye_or_rating_key_dyer as YE_OR_RATING,
+ye_oa_rating_lb as YE_OR_RATING_LABEL,
+ye_oa_rating_lb as YE_OR_RATING_LABEL_MASK,
+fyef_ye_conversation_date_fyef as YE_CONVERSATION_DATE,
+fyef_ye_lmdate_fyef as YE_LMDATE,
+YE_MANAGER_LMDATE,
+fyef_ye_manager_comments_fyef as YE_MANAGER_COMMENTS,
+YE_EMPLOYEE_LMDATE as YE_EMPLOYEE_LMDATE,
+fyef_ye_employee_comment_fyef as YE_EMPLOYEE_COMMENTS,
+YE_MATRIX_MANAGER_LMDATE,
+fyef_ye_matrix_manager_comments_fyef as YE_MATRIX_MANAGER_COMMENTS,
+fyef_sgn_employee_comments_fyef as SGN_EMPLOYEE_COMMENTS,
+fyef_sgn_manager_comments_fyef as SGN_MANAGER_COMMENTS,
+fyef_employee_signature_fyef as SGN_EMP_SIGN,
+fyef_sgn_lmdate_fyef as SGN_EMPLOYEE_LMDATE,
+null as SGN_EMPLOYEE_DATE,
+fyef_manager_signature_fyef as SGN_MANAGER_SIGN,
+fyef_sgn_lmdate_fyef as SGN_MANAGER_LMDATE,
+null as SGN_MANAGER_DATE,
+case when upper (SGN_EMP_SIGN) = 'TRUE' THEN 'Yes' ELSE 'No' end as SGN_EMPSIGN,
+case when upper (SGN_MANAGER_SIGN) = 'TRUE' THEN 'Yes' ELSE 'No' end as SGN_MGRSIGN,
+fyef_cmpl_lmdate_fyef as SGN_COMPLETED_LMDATE,
+fyef_completed_content_id_fyef as SGN_COMPLETED_CONTENT_ID,
+DPFY_YEAR_DPFY AS YEAR,
+Case When PG_RATING IS NOT NULL And PG_RATING <> 6 And PG_RATING <> -1 Then 'Yes' Else 'No' End As "Manager Rating People Goals",
+Case When BG_RATING IS NOT NULL And BG_RATING <> 6 And BG_RATING <> -1 Then 'Yes' Else 'No' End As "Manager Rating Business Goals",
+Case When OR_RATING IS NOT NULL And OR_RATING <> 6 And OR_RATING <> -1  Then 'Yes' Else 'No' End As "Manager Rating Progress in the Job Goals",
+Case When LENGTH(PE_MANAGER_COMMENTS) > 0 Then 'Yes' Else 'No' End As "Manager Rating comment for HR",
+Case When LENGTH(YE_MANAGER_COMMENTS) > 0 Then 'Yes' Else 'No' End As "Manager Year End comment",
+Case When LENGTH(YE_EMPLOYEE_COMMENTS) > 0 Then 'Yes' Else 'No' End As "Employee Year End comment"
+from (select * from {{ ref('fact_ye_form_v2') }} where FYEF_FORMDATA_STATUS_FYEF <>'4') FYFV
+Inner join {{ ref('dim_employee_profile_vw') }} EMP
+ON EMP_ID = EMP.EMPLOYEE_ID
+LEFT OUTER JOIN {{ ref('rel_employee_managers') }} MGR
+ON MGR.REEM_EMPLOYEE_PROFILE_KEY_DDEP=EMP.EMPLOYEE_ID
+LEFT OUTER JOIN {{ ref('dim_employee_profile_vw') }} DEP
+ON MGR.REEM_FK_MANAGER_KEY_DDEP=DEP.EMPLOYEE_ID
+LEFT OUTER JOIN
+{{ ref('dim_param_forms_year') }} DPFY
+ON DPFY.DPFY_FORM_TEMPLATE_ID_DPFY = FYFV.FYEF_FORM_TEMPLATE_ID_FYEF
+WHERE fyef_formdata_status_fyef <> '4'
+
+)
+SELECT
+EMP_SK,
+MGR_SK,
+EMP_ID,
+MANAGER_ID,
+FORMDATA_ID,
+FORM_TITLE,
+IS_FORM_LAUNCHED,
+FORM_STATUS,
+PG_RATING,
+PG_RATING_LABEL,
+PG_RATING_LABEL_MASK,
+BG_RATING,
+BG_RATING_LABEL,
+BG_RATING_LABEL_MASK,
+OR_RATING,
+OR_RATING_LABEL,
+OR_RATING_LABEL_MASK,
+NB_OVERALL_RATINGS,
+PE_PG_RATING,
+PE_PG_RATING_LABEL,
+PE_PG_RATING_LABEL_MASK,
+PE_BG_RATING,
+PE_BG_RATING_LABEL,
+PE_BG_RATING_LABEL_MASK,
+PE_OR_RATING,
+PE_OR_RATING_LABEL,
+PE_OR_RATING_LABEL_MASK,
+PE_MANAGER_COMMENTS,
+PE_LMDATE,
+YE_PG_RATING,
+YE_PG_RATING_LABEL,
+YE_PG_RATING_LABEL_MASK,
+YE_BG_RATING,
+YE_BG_RATING_LABEL,
+YE_BG_RATING_LABEL_MASK,
+YE_OR_RATING,
+YE_OR_RATING_LABEL,
+YE_OR_RATING_LABEL_MASK,
+YE_CONVERSATION_DATE,
+YE_LMDATE,
+YE_MANAGER_LMDATE,
+YE_MANAGER_COMMENTS,
+YE_MATRIX_MANAGER_LMDATE,
+YE_MATRIX_MANAGER_COMMENTS,
+YE_EMPLOYEE_LMDATE,
+YE_EMPLOYEE_COMMENTS,
+SGN_EMPLOYEE_COMMENTS,
+SGN_MANAGER_COMMENTS,
+SGN_EMP_SIGN,
+SGN_EMPLOYEE_LMDATE,
+SGN_EMPLOYEE_DATE,
+SGN_MANAGER_SIGN,
+SGN_MANAGER_LMDATE,
+SGN_MANAGER_DATE,
+SGN_EMPSIGN,
+SGN_MGRSIGN,
+SGN_COMPLETED_LMDATE,
+SGN_COMPLETED_CONTENT_ID,
+YEAR,
+"Manager Rating People Goals",
+"Manager Rating Business Goals",
+"Manager Rating Progress in the Job Goals",
+"Manager Rating comment for HR",
+"Manager Year End comment",
+"Employee Year End comment"
+FROM YE_FORMS

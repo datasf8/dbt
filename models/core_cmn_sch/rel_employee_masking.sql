@@ -1,0 +1,14 @@
+{{ config(materialized='table',transient=false) }}
+
+WITH EMPLOYEE_MASKING AS
+(
+select a.employee_upn ,b.employee_id, b.EMPLOYEE_KEY from
+{{ env_var('DBT_PUB_DB') }}.CMN_PUB_SCH.DIM_EMPLOYEE_PROFILE_VW a
+Inner join {{ env_var('DBT_CORE_DB') }}.CMN_CORE_SCH.REL_EMPLOYEE_USER On REEU_ACCESS_EMPLOYEE_ID_REEM    = A.EMPLOYEE_ID
+Inner Join {{ env_var('DBT_PUB_DB') }}.CMN_PUB_SCH.DIM_EMPLOYEE_PROFILE_VW b On REEU_EMPLOYEE_ID_DDEP=b.EMPLOYEE_ID
+where a.PROFESSIONAL_FIELD_CODE in ('PF000016')
+and  b.PROFESSIONAL_FIELD_CODE in ('PF000016')
+)
+SELECT
+*
+FROM EMPLOYEE_MASKING

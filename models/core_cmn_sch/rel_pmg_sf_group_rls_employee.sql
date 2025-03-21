@@ -1,0 +1,78 @@
+{{
+    config(
+        materialized="table",
+        cluster_by=["reeu_group_id_reem"],
+        transient=false,
+        snowflake_warehouse="HRDP_DBT_PREM_WH",
+    )
+}}
+with
+    pmgm_rls as (
+        select reeu_subject_domain_reeu, reeu_group_id_reem, reeu_employee_id_ddep
+        from
+            (
+                with
+                    employee_user as (
+                        select
+                            subjectdomain,
+                            group_id,
+                            case
+                                when max_num_emp = array_size(list_employees)
+                                then 'ALL'::array
+                                else list_employees
+                            end as employee_id_list
+                        from
+                            (
+                                select distinct
+                                    subjectdomain,
+                                    group_id,
+                                    max(max_num_emp) as max_num_emp,
+                                    array_agg(distinct employee_id) as list_employees
+                                from
+                                    (
+                                        select distinct
+                                            dpsr.subjectdomain as subjectdomain,
+                                            dgu_grt.grp_id as group_id,
+                                            dgu_tgt.employee_id as employee_id,
+                                            max_num_emp
+                                        from {{ ref("dim_param_sf_roles") }} dpsr
+                                        join
+                                            {{ ref("dim_sf_roles_group") }} dsrg
+                                            on dpsr.sfroleid = dsrg.sfroleid
+                                        join
+                                            {{ ref("dim_group_user") }} dgu_grt
+                                            on dgu_grt.grp_id = dsrg.grtgroup
+                                            and dgu_grt.groupname != '$$EVERYONE$$'
+                                        join
+                                            {{ ref("dim_group_user") }} dgu_tgt
+                                            on dgu_tgt.grp_id = dsrg.tgtgroup
+                                        join
+                                            (
+                                                select
+                                                    count(
+                                                        distinct employee_id
+                                                    ) as max_num_emp
+                                                from {{ ref("dim_group_user") }} all_emp
+                                            )
+                                            on 1 = 1
+                                        where subjectdomain = 'PMGM'
+                                    ) a
+
+                                group by 1, 2
+
+                            )
+                    )
+                select
+                    subjectdomain as reeu_subject_domain_reeu,
+                    group_id as reeu_group_id_reem,
+                    c.value::string as reeu_employee_id_ddep
+                from employee_user, lateral flatten(input => employee_id_list) c
+                order by reeu_group_id_reem, reeu_employee_id_ddep
+            )
+    ) 
+
+select
+    reeu_subject_domain_reeu,
+    reeu_group_id_reem::number as reeu_group_id_reem,
+    reeu_employee_id_ddep
+from pmgm_rls 
