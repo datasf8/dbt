@@ -1,0 +1,1 @@
+select {{ dbt_utils.star(ref("dashboards_refresh_last_seven_days")) }} from {{ ref("dashboards_refresh_last_seven_days") }}
