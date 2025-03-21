@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: landing_tables_CMN
+    description: 'Landing tables are defined here FOR COMMON'
+    database: "{{ env_var('DBT_LANDING_DB') }}"
+    schema: "{{ env_var('DBT_LANDING_CMN_SCH') }}"
+    tables:
+      - name: EMPLOYEE_PROFILE
+      - name: EMPLOYEE_MANAGER
+      - name: GROUP_USER
+      - name: SF_ROLES_GROUP
+      - name: PARAM_SF_ROLES
+      - name: RANGE
+      - name: COUNTRY_ZONES
+      - name: ROLE_DETAILS
+      - name: PER_PERSON
+      - name: PER_PERSONAL
+      - name: EMP_JOB_RELATIONSHIPS
+      - name: EMP_EMPLOYMENT
+      - name: EMP_JOB
+      - name: POSITION
+      - name: FO_JOB_CODE
+  - name: landing_tables_CMP
+    description: 'Landing tables are defined here FOR CMP'
+    database: "{{ env_var('DBT_LANDING_DB') }}"
+    schema: "{{ env_var('DBT_LANDING_CMP_SCH') }}"
+    tables:
+      - name: FLAG_INCREASE
+      - name: FLAG_PROMOTION
+      - name: FLAG_CONFORMED_TO_GUIDANCE
+      - name: YE_COMPENSATION_REPORT
+      - name: CAMPAIGN
+      - name: VARIABLE_PAY_REPORT
+      - name: VARIABLE_PAY_GLOBAL_REPORT
+      - name: YE_COMPENSATION_YE2023
+      - name: YE_COMPENSATION_AYE2022
+      - name: VARIABLE_PAY_DETAILED_BS2023
+      - name: VARIABLE_PAY_GLOBAL_BS2023
+      - name: YE_COMPENSATION_YE2024
+      - name: VARIABLE_PAY_DETAILED_BS2024
+      - name: VARIABLE_PAY_GLOBAL_BS2024
