@@ -1,0 +1,201 @@
+2022-04-21 12:25:41,355 - MainThread cursor.py:619 - execute() - DEBUG - executing SQL/command
+2022-04-21 12:25:41,355 - MainThread cursor.py:652 - execute() - DEBUG - binding: [select current_timestamp] with input=[None], processed=[{}]
+2022-04-21 12:25:41,356 - MainThread cursor.py:705 - execute() - INFO - query: [select current_timestamp]
+2022-04-21 12:25:41,356 - MainThread connection.py:1254 - _next_sequence_counter() - DEBUG - sequence counter: 1
+2022-04-21 12:25:41,356 - MainThread cursor.py:447 - _execute_helper() - DEBUG - Request id: 87fc8302-b751-4f59-8165-7380bbba6eac
+2022-04-21 12:25:41,356 - MainThread cursor.py:450 - _execute_helper() - DEBUG - running query [select current_timestamp]
+2022-04-21 12:25:41,356 - MainThread cursor.py:459 - _execute_helper() - DEBUG - is_file_transfer: False
+2022-04-21 12:25:41,356 - MainThread connection.py:925 - cmd_query() - DEBUG - _cmd_query
+2022-04-21 12:25:41,357 - MainThread connection.py:948 - cmd_query() - DEBUG - sql=[select current_timestamp], sequence_id=[1], is_file_transfer=[False]
+2022-04-21 12:25:41,357 - MainThread network.py:1117 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 1/1 active sessions
+2022-04-21 12:25:41,357 - MainThread network.py:823 - _request_exec_wrapper() - DEBUG - remaining request timeout: None, retry cnt: 1
+2022-04-21 12:25:41,357 - MainThread network.py:804 - add_request_guid() - DEBUG - Request guid: 891f4768-c293-4a47-9834-161962b8d9da
+2022-04-21 12:25:41,357 - MainThread network.py:973 - _request_exec() - DEBUG - socket timeout: 60
+2022-04-21 12:25:41,408 - MainThread connectionpool.py:452 - _make_request() - DEBUG - https://jx67735.europe-west4.gcp.snowflakecomputing.com:443 "POST /queries/v1/query-request?requestId=87fc8302-b751-4f59-8165-7380bbba6eac&request_guid=891f4768-c293-4a47-9834-161962b8d9da HTTP/1.1" 200 None
+2022-04-21 12:25:41,409 - MainThread network.py:1002 - _request_exec() - DEBUG - SUCCESS
+2022-04-21 12:25:41,409 - MainThread network.py:1122 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 0/1 active sessions
+2022-04-21 12:25:41,409 - MainThread network.py:711 - _post_request() - DEBUG - ret[code] = None, after post request
+2022-04-21 12:25:41,409 - MainThread network.py:735 - _post_request() - DEBUG - Query id: 01a3c0d1-0000-502b-0000-57c900ef52da
+2022-04-21 12:25:41,410 - MainThread cursor.py:727 - execute() - DEBUG - sfqid: 01a3c0d1-0000-502b-0000-57c900ef52da
+2022-04-21 12:25:41,410 - MainThread cursor.py:729 - execute() - INFO - query execution done
+2022-04-21 12:25:41,410 - MainThread cursor.py:731 - execute() - DEBUG - SUCCESS
+2022-04-21 12:25:41,410 - MainThread cursor.py:734 - execute() - DEBUG - PUT OR GET: None
+2022-04-21 12:25:41,410 - MainThread cursor.py:829 - _init_result_and_meta() - DEBUG - Query result format: arrow
+2022-04-21 12:25:41,419 - MainThread cursor.py:619 - execute() - DEBUG - executing SQL/command
+2022-04-21 12:25:41,420 - MainThread cursor.py:652 - execute() - DEBUG - binding: [select 1, 2, 3, 4||| select 1||| select 2|||] with input=[None], processed=[{}]
+2022-04-21 12:25:41,420 - MainThread cursor.py:705 - execute() - INFO - query: [select 1, 2, 3, 4||| select 1||| select 2|||]
+2022-04-21 12:25:41,420 - MainThread connection.py:1254 - _next_sequence_counter() - DEBUG - sequence counter: 2
+2022-04-21 12:25:41,420 - MainThread cursor.py:447 - _execute_helper() - DEBUG - Request id: 0fce4391-45d1-4432-881e-3ca5838f4ce8
+2022-04-21 12:25:41,421 - MainThread cursor.py:450 - _execute_helper() - DEBUG - running query [select 1, 2, 3, 4||| select 1||| select 2|||]
+2022-04-21 12:25:41,421 - MainThread cursor.py:459 - _execute_helper() - DEBUG - is_file_transfer: False
+2022-04-21 12:25:41,421 - MainThread connection.py:925 - cmd_query() - DEBUG - _cmd_query
+2022-04-21 12:25:41,421 - MainThread connection.py:948 - cmd_query() - DEBUG - sql=[select 1, 2, 3, 4||| select 1||| select 2|||], sequence_id=[2], is_file_transfer=[False]
+2022-04-21 12:25:41,421 - MainThread network.py:1117 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 1/1 active sessions
+2022-04-21 12:25:41,422 - MainThread network.py:823 - _request_exec_wrapper() - DEBUG - remaining request timeout: None, retry cnt: 1
+2022-04-21 12:25:41,422 - MainThread network.py:804 - add_request_guid() - DEBUG - Request guid: cfd6646a-31ca-4db5-adc3-7e933a3f6536
+2022-04-21 12:25:41,422 - MainThread network.py:973 - _request_exec() - DEBUG - socket timeout: 60
+2022-04-21 12:25:41,474 - MainThread connectionpool.py:452 - _make_request() - DEBUG - https://jx67735.europe-west4.gcp.snowflakecomputing.com:443 "POST /queries/v1/query-request?requestId=0fce4391-45d1-4432-881e-3ca5838f4ce8&request_guid=cfd6646a-31ca-4db5-adc3-7e933a3f6536 HTTP/1.1" 200 642
+2022-04-21 12:25:41,475 - MainThread network.py:1002 - _request_exec() - DEBUG - SUCCESS
+2022-04-21 12:25:41,476 - MainThread network.py:1122 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 0/1 active sessions
+2022-04-21 12:25:41,476 - MainThread network.py:711 - _post_request() - DEBUG - ret[code] = 001003, after post request
+2022-04-21 12:25:41,476 - MainThread network.py:735 - _post_request() - DEBUG - Query id: 01a3c0d1-0000-502b-0000-57c900ef52de
+2022-04-21 12:25:41,477 - MainThread cursor.py:727 - execute() - DEBUG - sfqid: 01a3c0d1-0000-502b-0000-57c900ef52de
+2022-04-21 12:25:41,477 - MainThread cursor.py:729 - execute() - INFO - query execution done
+2022-04-21 12:25:41,477 - MainThread cursor.py:779 - execute() - DEBUG - {'data': {'internalError': False, 'errorCode': '001003', 'age': 0, 'sqlState': '42000', 'queryId': '01a3c0d1-0000-502b-0000-57c900ef52de', 'line': -1, 'pos': -1, 'type': 'COMPILATION'}, 'code': '001003', 'message': "SQL compilation error:\nsyntax error line 1 at position 19 unexpected '|'.\nsyntax error line 2 at position 0 unexpected 'select'.\nsyntax error line 2 at position 10 unexpected '|'.\nsyntax error line 3 at position 0 unexpected 'select'.\nsyntax error line 3 at position 10 unexpected '|'.\nsyntax error line 3 at position 11 unexpected '<EOF>'.", 'success': False, 'headers': None}
+2022-04-21 12:30:34,952 - MainThread cursor.py:619 - execute() - DEBUG - executing SQL/command
+2022-04-21 12:30:34,952 - MainThread cursor.py:652 - execute() - DEBUG - binding: [select 1] with input=[None], processed=[{}]
+2022-04-21 12:30:34,952 - MainThread cursor.py:705 - execute() - INFO - query: [select 1]
+2022-04-21 12:30:34,952 - MainThread connection.py:1254 - _next_sequence_counter() - DEBUG - sequence counter: 1
+2022-04-21 12:30:34,952 - MainThread cursor.py:447 - _execute_helper() - DEBUG - Request id: 4c846c20-580a-4dc0-9e2a-161af9c90296
+2022-04-21 12:30:34,952 - MainThread cursor.py:450 - _execute_helper() - DEBUG - running query [select 1]
+2022-04-21 12:30:34,952 - MainThread cursor.py:459 - _execute_helper() - DEBUG - is_file_transfer: False
+2022-04-21 12:30:34,953 - MainThread connection.py:925 - cmd_query() - DEBUG - _cmd_query
+2022-04-21 12:30:34,953 - MainThread connection.py:948 - cmd_query() - DEBUG - sql=[select 1], sequence_id=[1], is_file_transfer=[False]
+2022-04-21 12:30:34,953 - MainThread network.py:1117 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 1/1 active sessions
+2022-04-21 12:30:34,954 - MainThread network.py:823 - _request_exec_wrapper() - DEBUG - remaining request timeout: None, retry cnt: 1
+2022-04-21 12:30:34,954 - MainThread network.py:804 - add_request_guid() - DEBUG - Request guid: bec44f91-54ed-4f71-a678-853e357126e7
+2022-04-21 12:30:34,954 - MainThread network.py:973 - _request_exec() - DEBUG - socket timeout: 60
+2022-04-21 12:30:35,001 - MainThread connectionpool.py:452 - _make_request() - DEBUG - https://jx67735.europe-west4.gcp.snowflakecomputing.com:443 "POST /queries/v1/query-request?requestId=4c846c20-580a-4dc0-9e2a-161af9c90296&request_guid=bec44f91-54ed-4f71-a678-853e357126e7 HTTP/1.1" 200 None
+2022-04-21 12:30:35,002 - MainThread network.py:1002 - _request_exec() - DEBUG - SUCCESS
+2022-04-21 12:30:35,002 - MainThread network.py:1122 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 0/1 active sessions
+2022-04-21 12:30:35,002 - MainThread network.py:711 - _post_request() - DEBUG - ret[code] = None, after post request
+2022-04-21 12:30:35,002 - MainThread network.py:735 - _post_request() - DEBUG - Query id: 01a3c0d6-0000-502b-0000-57c900ef52ee
+2022-04-21 12:30:35,002 - MainThread cursor.py:727 - execute() - DEBUG - sfqid: 01a3c0d6-0000-502b-0000-57c900ef52ee
+2022-04-21 12:30:35,003 - MainThread cursor.py:729 - execute() - INFO - query execution done
+2022-04-21 12:30:35,003 - MainThread cursor.py:731 - execute() - DEBUG - SUCCESS
+2022-04-21 12:30:35,003 - MainThread cursor.py:734 - execute() - DEBUG - PUT OR GET: None
+2022-04-21 12:30:35,003 - MainThread cursor.py:829 - _init_result_and_meta() - DEBUG - Query result format: arrow
+2022-04-21 12:35:34,088 - MainThread cursor.py:619 - execute() - DEBUG - executing SQL/command
+2022-04-21 12:35:34,089 - MainThread cursor.py:652 - execute() - DEBUG - binding: [select $ENV] with input=[None], processed=[{}]
+2022-04-21 12:35:34,089 - MainThread cursor.py:705 - execute() - INFO - query: [select $ENV]
+2022-04-21 12:35:34,089 - MainThread connection.py:1254 - _next_sequence_counter() - DEBUG - sequence counter: 1
+2022-04-21 12:35:34,089 - MainThread cursor.py:447 - _execute_helper() - DEBUG - Request id: 9931598e-28ea-44f0-9d86-7bec921b96e2
+2022-04-21 12:35:34,089 - MainThread cursor.py:450 - _execute_helper() - DEBUG - running query [select $ENV]
+2022-04-21 12:35:34,090 - MainThread cursor.py:459 - _execute_helper() - DEBUG - is_file_transfer: False
+2022-04-21 12:35:34,090 - MainThread connection.py:925 - cmd_query() - DEBUG - _cmd_query
+2022-04-21 12:35:34,090 - MainThread connection.py:948 - cmd_query() - DEBUG - sql=[select $ENV], sequence_id=[1], is_file_transfer=[False]
+2022-04-21 12:35:34,090 - MainThread network.py:1117 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 1/1 active sessions
+2022-04-21 12:35:34,091 - MainThread network.py:823 - _request_exec_wrapper() - DEBUG - remaining request timeout: None, retry cnt: 1
+2022-04-21 12:35:34,091 - MainThread network.py:804 - add_request_guid() - DEBUG - Request guid: 1d87da3b-7592-4d8a-8a42-45d28d8467bc
+2022-04-21 12:35:34,091 - MainThread network.py:973 - _request_exec() - DEBUG - socket timeout: 60
+2022-04-21 12:35:34,153 - MainThread connectionpool.py:452 - _make_request() - DEBUG - https://jx67735.europe-west4.gcp.snowflakecomputing.com:443 "POST /queries/v1/query-request?requestId=9931598e-28ea-44f0-9d86-7bec921b96e2&request_guid=1d87da3b-7592-4d8a-8a42-45d28d8467bc HTTP/1.1" 200 383
+2022-04-21 12:35:34,153 - MainThread network.py:1002 - _request_exec() - DEBUG - SUCCESS
+2022-04-21 12:35:34,153 - MainThread network.py:1122 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 0/1 active sessions
+2022-04-21 12:35:34,153 - MainThread network.py:711 - _post_request() - DEBUG - ret[code] = 002211, after post request
+2022-04-21 12:35:34,154 - MainThread network.py:735 - _post_request() - DEBUG - Query id: 01a3c0db-0000-500f-0000-57c900ef144e
+2022-04-21 12:35:34,154 - MainThread cursor.py:727 - execute() - DEBUG - sfqid: 01a3c0db-0000-500f-0000-57c900ef144e
+2022-04-21 12:35:34,154 - MainThread cursor.py:729 - execute() - INFO - query execution done
+2022-04-21 12:35:34,154 - MainThread cursor.py:779 - execute() - DEBUG - {'data': {'internalError': False, 'errorCode': '002211', 'age': 0, 'sqlState': '02000', 'queryId': '01a3c0db-0000-500f-0000-57c900ef144e', 'line': 1, 'pos': 7, 'type': 'COMPILATION'}, 'code': '002211', 'message': "SQL compilation error: error line 1 at position 7\nSession variable '$ENV' does not exist", 'success': False, 'headers': None}
+2022-04-21 12:35:54,096 - MainThread cursor.py:619 - execute() - DEBUG - executing SQL/command
+2022-04-21 12:35:54,097 - MainThread cursor.py:652 - execute() - DEBUG - binding: [select ${ENV}] with input=[None], processed=[{}]
+2022-04-21 12:35:54,097 - MainThread cursor.py:705 - execute() - INFO - query: [select ${ENV}]
+2022-04-21 12:35:54,097 - MainThread connection.py:1254 - _next_sequence_counter() - DEBUG - sequence counter: 1
+2022-04-21 12:35:54,097 - MainThread cursor.py:447 - _execute_helper() - DEBUG - Request id: b3ba6714-4193-4d98-8951-0914775e7cbc
+2022-04-21 12:35:54,098 - MainThread cursor.py:450 - _execute_helper() - DEBUG - running query [select ${ENV}]
+2022-04-21 12:35:54,098 - MainThread cursor.py:459 - _execute_helper() - DEBUG - is_file_transfer: False
+2022-04-21 12:35:54,098 - MainThread connection.py:925 - cmd_query() - DEBUG - _cmd_query
+2022-04-21 12:35:54,098 - MainThread connection.py:948 - cmd_query() - DEBUG - sql=[select ${ENV}], sequence_id=[1], is_file_transfer=[False]
+2022-04-21 12:35:54,099 - MainThread network.py:1117 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 1/1 active sessions
+2022-04-21 12:35:54,099 - MainThread network.py:823 - _request_exec_wrapper() - DEBUG - remaining request timeout: None, retry cnt: 1
+2022-04-21 12:35:54,099 - MainThread network.py:804 - add_request_guid() - DEBUG - Request guid: 1de8ea36-f2c0-4d44-b08e-e728a78d4c3b
+2022-04-21 12:35:54,099 - MainThread network.py:973 - _request_exec() - DEBUG - socket timeout: 60
+2022-04-21 12:35:54,155 - MainThread connectionpool.py:452 - _make_request() - DEBUG - https://jx67735.europe-west4.gcp.snowflakecomputing.com:443 "POST /queries/v1/query-request?requestId=b3ba6714-4193-4d98-8951-0914775e7cbc&request_guid=1de8ea36-f2c0-4d44-b08e-e728a78d4c3b HTTP/1.1" 200 369
+2022-04-21 12:35:54,156 - MainThread network.py:1002 - _request_exec() - DEBUG - SUCCESS
+2022-04-21 12:35:54,156 - MainThread network.py:1122 - _use_requests_session() - DEBUG - Session status for SessionPool 'jx67735.europe-west4.gcp.snowflakecomputing.com', SessionPool 0/1 active sessions
+2022-04-21 12:35:54,157 - MainThread network.py:711 - _post_request() - DEBUG - ret[code] = 001003, after post request
+2022-04-21 12:35:54,157 - MainThread network.py:735 - _post_request() - DEBUG - Query id: 01a3c0db-0000-500f-0000-57c900ef1452
+2022-04-21 12:35:54,158 - MainThread cursor.py:727 - execute() - DEBUG - sfqid: 01a3c0db-0000-500f-0000-57c900ef1452
+2022-04-21 12:35:54,158 - MainThread cursor.py:729 - execute() - INFO - query execution done
+2022-04-21 12:35:54,158 - MainThread cursor.py:779 - execute() - DEBUG - {'data': {'internalError': False, 'errorCode': '001003', 'age': 0, 'sqlState': '42000', 'queryId': '01a3c0db-0000-500f-0000-57c900ef1452', 'line': -1, 'pos': -1, 'type': 'COMPILATION'}, 'code': '001003', 'message': "SQL compilation error:\nsyntax error line 1 at position 7 unexpected '$'.", 'success': False, 'headers': None}
+2022-08-29 16:24:16,947 - MainThread cursor.py:619 - execute() - DEBUG - executing SQL/command
+2022-08-29 16:24:16,949 - MainThread cursor.py:652 - execute() - DEBUG - binding: [select current_date()] with input=[None], processed=[{}]
+2022-08-29 16:24:16,950 - MainThread cursor.py:705 - execute() - INFO - query: [select current_date()]
+2022-08-29 16:24:16,952 - MainThread connection.py:1254 - _next_sequence_counter() - DEBUG - sequence counter: 1
+2022-08-29 16:24:16,952 - MainThread cursor.py:447 - _execute_helper() - DEBUG - Request id: 62eb604c-e4b6-4cd0-986f-d8abf5a81373
+2022-08-29 16:24:16,952 - MainThread cursor.py:450 - _execute_helper() - DEBUG - running query [select current_date()]
+2022-08-29 16:24:16,953 - MainThread cursor.py:459 - _execute_helper() - DEBUG - is_file_transfer: False
+2022-08-29 16:24:16,953 - MainThread connection.py:925 - cmd_query() - DEBUG - _cmd_query
+2022-08-29 16:24:16,954 - MainThread connection.py:948 - cmd_query() - DEBUG - sql=[select current_date()], sequence_id=[1], is_file_transfer=[False]
+2022-08-29 16:24:16,955 - MainThread network.py:1117 - _use_requests_session() - DEBUG - Session status for SessionPool 'dj54893.europe-west4.gcp.snowflakecomputing.com', SessionPool 1/1 active sessions
+2022-08-29 16:24:16,955 - MainThread network.py:823 - _request_exec_wrapper() - DEBUG - remaining request timeout: None, retry cnt: 1
+2022-08-29 16:24:16,956 - MainThread network.py:804 - add_request_guid() - DEBUG - Request guid: 395a257e-1118-46b6-8b4d-d82fdc4966c5
+2022-08-29 16:24:16,956 - MainThread network.py:973 - _request_exec() - DEBUG - socket timeout: 60
+2022-08-29 16:24:17,032 - MainThread connectionpool.py:452 - _make_request() - DEBUG - https://dj54893.europe-west4.gcp.snowflakecomputing.com:443 "POST /queries/v1/query-request?requestId=62eb604c-e4b6-4cd0-986f-d8abf5a81373&request_guid=395a257e-1118-46b6-8b4d-d82fdc4966c5 HTTP/1.1" 200 None
+2022-08-29 16:24:17,034 - MainThread network.py:1002 - _request_exec() - DEBUG - SUCCESS
+2022-08-29 16:24:17,035 - MainThread network.py:1122 - _use_requests_session() - DEBUG - Session status for SessionPool 'dj54893.europe-west4.gcp.snowflakecomputing.com', SessionPool 0/1 active sessions
+2022-08-29 16:24:17,036 - MainThread network.py:711 - _post_request() - DEBUG - ret[code] = None, after post request
+2022-08-29 16:24:17,036 - MainThread network.py:735 - _post_request() - DEBUG - Query id: 01a69d00-0000-645e-0000-7e6500bf92ba
+2022-08-29 16:24:17,037 - MainThread cursor.py:727 - execute() - DEBUG - sfqid: 01a69d00-0000-645e-0000-7e6500bf92ba
+2022-08-29 16:24:17,038 - MainThread cursor.py:729 - execute() - INFO - query execution done
+2022-08-29 16:24:17,038 - MainThread cursor.py:731 - execute() - DEBUG - SUCCESS
+2022-08-29 16:24:17,039 - MainThread cursor.py:734 - execute() - DEBUG - PUT OR GET: None
+2022-08-29 16:24:17,040 - MainThread cursor.py:829 - _init_result_and_meta() - DEBUG - Query result format: arrow
+2022-08-29 16:25:24,813 - MainThread cursor.py:619 - execute() - DEBUG - executing SQL/command
+2022-08-29 16:25:24,813 - MainThread cursor.py:652 - execute() - DEBUG - binding: [select current_date()] with input=[None], processed=[{}]
+2022-08-29 16:25:24,813 - MainThread cursor.py:705 - execute() - INFO - query: [select current_date()]
+2022-08-29 16:25:24,814 - MainThread connection.py:1254 - _next_sequence_counter() - DEBUG - sequence counter: 1
+2022-08-29 16:25:24,814 - MainThread cursor.py:447 - _execute_helper() - DEBUG - Request id: 80ef2967-061f-48eb-8158-cb5fb9ed81dd
+2022-08-29 16:25:24,814 - MainThread cursor.py:450 - _execute_helper() - DEBUG - running query [select current_date()]
+2022-08-29 16:25:24,814 - MainThread cursor.py:459 - _execute_helper() - DEBUG - is_file_transfer: False
+2022-08-29 16:25:24,814 - MainThread connection.py:925 - cmd_query() - DEBUG - _cmd_query
+2022-08-29 16:25:24,814 - MainThread connection.py:948 - cmd_query() - DEBUG - sql=[select current_date()], sequence_id=[1], is_file_transfer=[False]
+2022-08-29 16:25:24,815 - MainThread network.py:1117 - _use_requests_session() - DEBUG - Session status for SessionPool 'dj54893.europe-west4.gcp.snowflakecomputing.com', SessionPool 1/1 active sessions
+2022-08-29 16:25:24,815 - MainThread network.py:823 - _request_exec_wrapper() - DEBUG - remaining request timeout: None, retry cnt: 1
+2022-08-29 16:25:24,815 - MainThread network.py:804 - add_request_guid() - DEBUG - Request guid: df98afb8-6f01-4c16-ab35-64282c0d821b
+2022-08-29 16:25:24,815 - MainThread network.py:973 - _request_exec() - DEBUG - socket timeout: 60
+2022-08-29 16:25:24,921 - MainThread connectionpool.py:452 - _make_request() - DEBUG - https://dj54893.europe-west4.gcp.snowflakecomputing.com:443 "POST /queries/v1/query-request?requestId=80ef2967-061f-48eb-8158-cb5fb9ed81dd&request_guid=df98afb8-6f01-4c16-ab35-64282c0d821b HTTP/1.1" 200 None
+2022-08-29 16:25:24,922 - MainThread network.py:1002 - _request_exec() - DEBUG - SUCCESS
+2022-08-29 16:25:24,923 - MainThread network.py:1122 - _use_requests_session() - DEBUG - Session status for SessionPool 'dj54893.europe-west4.gcp.snowflakecomputing.com', SessionPool 0/1 active sessions
+2022-08-29 16:25:24,923 - MainThread network.py:711 - _post_request() - DEBUG - ret[code] = None, after post request
+2022-08-29 16:25:24,923 - MainThread network.py:735 - _post_request() - DEBUG - Query id: 01a69d01-0000-646f-0000-7e6500bf5e3a
+2022-08-29 16:25:24,923 - MainThread cursor.py:727 - execute() - DEBUG - sfqid: 01a69d01-0000-646f-0000-7e6500bf5e3a
+2022-08-29 16:25:24,923 - MainThread cursor.py:729 - execute() - INFO - query execution done
+2022-08-29 16:25:24,923 - MainThread cursor.py:731 - execute() - DEBUG - SUCCESS
+2022-08-29 16:25:24,924 - MainThread cursor.py:734 - execute() - DEBUG - PUT OR GET: None
+2022-08-29 16:25:24,924 - MainThread cursor.py:829 - _init_result_and_meta() - DEBUG - Query result format: arrow
+2022-08-29 16:26:49,451 - MainThread cursor.py:619 - execute() - DEBUG - executing SQL/command
+2022-08-29 16:26:49,452 - MainThread cursor.py:652 - execute() - DEBUG - binding: [select current_date()] with input=[None], processed=[{}]
+2022-08-29 16:26:49,454 - MainThread cursor.py:705 - execute() - INFO - query: [select current_date()]
+2022-08-29 16:26:49,454 - MainThread connection.py:1254 - _next_sequence_counter() - DEBUG - sequence counter: 1
+2022-08-29 16:26:49,454 - MainThread cursor.py:447 - _execute_helper() - DEBUG - Request id: dc773a05-3f89-4d57-9c0e-9dbe51bbc0d2
+2022-08-29 16:26:49,455 - MainThread cursor.py:450 - _execute_helper() - DEBUG - running query [select current_date()]
+2022-08-29 16:26:49,455 - MainThread cursor.py:459 - _execute_helper() - DEBUG - is_file_transfer: False
+2022-08-29 16:26:49,456 - MainThread connection.py:925 - cmd_query() - DEBUG - _cmd_query
+2022-08-29 16:26:49,456 - MainThread connection.py:948 - cmd_query() - DEBUG - sql=[select current_date()], sequence_id=[1], is_file_transfer=[False]
+2022-08-29 16:26:49,457 - MainThread network.py:1117 - _use_requests_session() - DEBUG - Session status for SessionPool 'dj54893.europe-west4.gcp.snowflakecomputing.com', SessionPool 1/1 active sessions
+2022-08-29 16:26:49,458 - MainThread network.py:823 - _request_exec_wrapper() - DEBUG - remaining request timeout: None, retry cnt: 1
+2022-08-29 16:26:49,459 - MainThread network.py:804 - add_request_guid() - DEBUG - Request guid: 1ae2f5cb-f567-4876-8964-2b3b4ab2327b
+2022-08-29 16:26:49,460 - MainThread network.py:973 - _request_exec() - DEBUG - socket timeout: 60
+2022-08-29 16:26:49,526 - MainThread connectionpool.py:452 - _make_request() - DEBUG - https://dj54893.europe-west4.gcp.snowflakecomputing.com:443 "POST /queries/v1/query-request?requestId=dc773a05-3f89-4d57-9c0e-9dbe51bbc0d2&request_guid=1ae2f5cb-f567-4876-8964-2b3b4ab2327b HTTP/1.1" 200 None
+2022-08-29 16:26:49,529 - MainThread network.py:1002 - _request_exec() - DEBUG - SUCCESS
+2022-08-29 16:26:49,530 - MainThread network.py:1122 - _use_requests_session() - DEBUG - Session status for SessionPool 'dj54893.europe-west4.gcp.snowflakecomputing.com', SessionPool 0/1 active sessions
+2022-08-29 16:26:49,531 - MainThread network.py:711 - _post_request() - DEBUG - ret[code] = None, after post request
+2022-08-29 16:26:49,532 - MainThread network.py:735 - _post_request() - DEBUG - Query id: 01a69d02-0000-6457-0000-7e6500bfb1da
+2022-08-29 16:26:49,532 - MainThread cursor.py:727 - execute() - DEBUG - sfqid: 01a69d02-0000-6457-0000-7e6500bfb1da
+2022-08-29 16:26:49,533 - MainThread cursor.py:729 - execute() - INFO - query execution done
+2022-08-29 16:26:49,533 - MainThread cursor.py:731 - execute() - DEBUG - SUCCESS
+2022-08-29 16:26:49,533 - MainThread cursor.py:734 - execute() - DEBUG - PUT OR GET: None
+2022-08-29 16:26:49,534 - MainThread cursor.py:829 - _init_result_and_meta() - DEBUG - Query result format: arrow
+2022-08-29 16:28:16,854 - MainThread cursor.py:619 - execute() - DEBUG - executing SQL/command
+2022-08-29 16:28:16,855 - MainThread cursor.py:652 - execute() - DEBUG - binding: [select current_date()] with input=[None], processed=[{}]
+2022-08-29 16:28:16,855 - MainThread cursor.py:705 - execute() - INFO - query: [select current_date()]
+2022-08-29 16:28:16,855 - MainThread connection.py:1254 - _next_sequence_counter() - DEBUG - sequence counter: 1
+2022-08-29 16:28:16,856 - MainThread cursor.py:447 - _execute_helper() - DEBUG - Request id: 7398bd4b-c663-4a50-aecd-ec7c814ed2ef
+2022-08-29 16:28:16,856 - MainThread cursor.py:450 - _execute_helper() - DEBUG - running query [select current_date()]
+2022-08-29 16:28:16,856 - MainThread cursor.py:459 - _execute_helper() - DEBUG - is_file_transfer: False
+2022-08-29 16:28:16,856 - MainThread connection.py:925 - cmd_query() - DEBUG - _cmd_query
+2022-08-29 16:28:16,856 - MainThread connection.py:948 - cmd_query() - DEBUG - sql=[select current_date()], sequence_id=[1], is_file_transfer=[False]
+2022-08-29 16:28:16,856 - MainThread network.py:1117 - _use_requests_session() - DEBUG - Session status for SessionPool 'dj54893.europe-west4.gcp.snowflakecomputing.com', SessionPool 1/1 active sessions
+2022-08-29 16:28:16,856 - MainThread network.py:823 - _request_exec_wrapper() - DEBUG - remaining request timeout: None, retry cnt: 1
+2022-08-29 16:28:16,857 - MainThread network.py:804 - add_request_guid() - DEBUG - Request guid: e14024e6-05e0-4b31-a545-7d6c1a0ad1da
+2022-08-29 16:28:16,857 - MainThread network.py:973 - _request_exec() - DEBUG - socket timeout: 60
+2022-08-29 16:28:16,912 - MainThread connectionpool.py:452 - _make_request() - DEBUG - https://dj54893.europe-west4.gcp.snowflakecomputing.com:443 "POST /queries/v1/query-request?requestId=7398bd4b-c663-4a50-aecd-ec7c814ed2ef&request_guid=e14024e6-05e0-4b31-a545-7d6c1a0ad1da HTTP/1.1" 200 None
+2022-08-29 16:28:16,912 - MainThread network.py:1002 - _request_exec() - DEBUG - SUCCESS
+2022-08-29 16:28:16,913 - MainThread network.py:1122 - _use_requests_session() - DEBUG - Session status for SessionPool 'dj54893.europe-west4.gcp.snowflakecomputing.com', SessionPool 0/1 active sessions
+2022-08-29 16:28:16,913 - MainThread network.py:711 - _post_request() - DEBUG - ret[code] = None, after post request
+2022-08-29 16:28:16,913 - MainThread network.py:735 - _post_request() - DEBUG - Query id: 01a69d04-0000-646f-0000-7e6500bf5e96
+2022-08-29 16:28:16,913 - MainThread cursor.py:727 - execute() - DEBUG - sfqid: 01a69d04-0000-646f-0000-7e6500bf5e96
+2022-08-29 16:28:16,913 - MainThread cursor.py:729 - execute() - INFO - query execution done
+2022-08-29 16:28:16,913 - MainThread cursor.py:731 - execute() - DEBUG - SUCCESS
+2022-08-29 16:28:16,914 - MainThread cursor.py:734 - execute() - DEBUG - PUT OR GET: None
+2022-08-29 16:28:16,914 - MainThread cursor.py:829 - _init_result_and_meta() - DEBUG - Query result format: arrow
