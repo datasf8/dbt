@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: QCK_SOURCE_TABLES
+    description: 'Quality Check tables'
+    database: "{{ env_var('DBT_QCK_DB') }}"
+    schema: "{{ env_var('DBT_QCK_SCH') }}"
+    tables:
+      - name: DIM_PARAM_DATAQUALITY_QUERIES
+      - name : FACT_DATAQUALITY_RESULTS
+      - name : FACT_DATAQUALITY_RESULTS_HISTO   
+      - name : LOG_DATAQUALITY_RUNS
+      - name : LOG_DATA_QUALITY_BY_RULE
+      - name : DIM_ORGANIZATION
+      - name : DIM_PROFESSIONAL_FIELD
+      - name : DIM_PARAM_DATAQUALITY_QUERIES_FIELDS_ORDER
+      - name : DIM_DATE
+  - name: QCK_RLS_SOURCE_TABLES  
+    description: 'Quality RLS Source tables '
+    database: "{{ env_var('DBT_RLS_QCK_DB') }}"
+    schema: "{{ env_var('DBT_RLS_QCK_SCH') }}"
+    tables:
+      - name: REL_EMPLOYEE_USER
+      - name : DIM_EMPLOYEE_PROFILE  
