@@ -1,0 +1,1330 @@
+version: 2
+
+models:
+  - name: location_group
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - LOCATION_GROUP_CODE
+            - LOCATION_GROUP_START_DATE
+    columns:
+      - name: LOCATION_GROUP_CODE
+      - name: LOCATION_GROUP_START_DATE
+        tests:
+          - not_null
+  - name: hr_division
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - HR_DIVISION_CODE
+            - HR_DIVISION_START_DATE
+    columns:
+      - name: HR_DIVISION_CODE
+      - name: HR_DIVISION_START_DATE
+        tests:
+          - not_null
+  - name: location
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - LOCATION_CODE
+            - LOCATION_START_DATE
+    columns:
+      - name: LOCATION_CODE
+      - name: LOCATION_START_DATE
+        tests:
+          - not_null
+  - name: currency
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - CURRENCY_CODE
+            - CURRENCY_START_DATE
+    columns:
+      - name: CURRENCY_CODE
+      - name: CURRENCY_START_DATE
+        tests:
+          - not_null
+  - name: country
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - COUNTRY_CODE
+            - COUNTRY_START_DATE
+    columns:
+      - name: COUNTRY_CODE
+      - name: COUNTRY_START_DATE
+        tests:
+          - not_null
+  - name: cost_center
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - COST_CENTER_CODE
+            - COST_CENTER_START_DATE
+    columns:
+      - name: COST_CENTER_CODE
+      - name: COST_CENTER_START_DATE
+        tests:
+          - not_null
+  - name: company
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - COMPANY_CODE
+            - COMPANY_START_DATE
+    columns:
+      - name: COMPANY_CODE
+      - name: COMPANY_START_DATE
+        tests:
+          - not_null
+  - name: business_unit
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - BUSINESS_UNIT_CODE
+            - BUSINESS_UNIT_START_DATE
+    columns:
+      - name: BUSINESS_UNIT_CODE
+      - name: BUSINESS_UNIT_START_DATE
+        tests:
+          - not_null
+  - name: brand
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - BRAND_CODE
+            - BRAND_START_DATE
+    columns:
+      - name: BRAND_CODE
+      - name: BRAND_START_DATE
+        tests:
+          - not_null
+  - name: area
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - AREA_CODE
+            - AREA_START_DATE
+    columns:
+      - name: AREA_CODE
+      - name: AREA_START_DATE
+        tests:
+          - not_null
+  - name: position
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - POSITION_CODE
+            - POSITION_START_DATE
+    columns:
+      - name: POSITION_CODE
+      - name: POSITION_START_DATE
+        tests:
+          - not_null
+  - name: position_relationship
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - POSITION_CODE
+            - POSITION_RELATIONSHIP_START_DATE
+    columns:
+      - name: POSITION_CODE
+      - name: POSITION_RELATIONSHIP_START_DATE
+        tests:
+          - not_null
+  - name: job_information
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - USER_ID
+            - JOB_START_DATE
+            - sequence_number
+    columns:
+      - name: USER_ID
+      - name: JOB_START_DATE
+      - name: sequence_number
+        tests:
+          - not_null
+  - name: business_unit_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - business_unit_type_code
+            - business_unit_type_start_date
+    columns:
+      - name: business_unit_type_code
+      - name: business_unit_type_start_date
+        tests:
+          - not_null
+  - name: employee_group
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - employee_group_code
+            - employee_group_start_date
+    columns:
+      - name: employee_group_code
+      - name: employee_group_start_date
+        tests:
+          - not_null
+  - name: employee_subgroup
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - employee_subgroup_code
+            - employee_subgroup_start_date
+    columns:
+      - name: employee_subgroup_code
+      - name: employee_subgroup_start_date
+        tests:
+          - not_null
+  - name: geographic_zone
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - geographic_zone_code
+            - geographic_zone_start_date
+    columns:
+      - name: geographic_zone_code
+      - name: geographic_zone_start_date
+        tests:
+          - not_null
+  - name: key_position_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - key_position_type_code
+            - key_position_type_start_date
+    columns:
+      - name: key_position_type_code
+      - name: key_position_type_start_date
+        tests:
+          - not_null
+  - name: event_reasons
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - event_reasons_code
+            - event_reasons_start_date
+    columns:
+      - name: event_reasons_code
+      - name: event_reasons_start_date
+        tests:
+          - not_null
+  - name: events
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - events_code
+            - events_start_date
+    columns:
+      - name: events_code
+      - name: events_start_date
+        tests:
+          - not_null
+  - name: hub
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hub_code
+            - hub_start_date
+    columns:
+      - name: hub_code
+      - name: hub_start_date
+        tests:
+          - not_null
+  - name: phone_information
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - personal_id
+            - phone_type_id
+    columns:
+      - name: personal_id
+      - name: phone_type_id
+        tests:
+          - not_null
+  - name: email_information
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - personal_id
+            - email_type_id
+    columns:
+      - name: personal_id
+      - name: email_type_id
+        tests:
+          - not_null
+  - name: phone_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - phone_type_code
+            - phone_type_start_date
+    columns:
+      - name: phone_type_code
+      - name: phone_type_start_date
+        tests:
+          - not_null
+  - name: email_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - email_type_code
+            - email_type_start_date
+    columns:
+      - name: email_type_code
+      - name: email_type_start_date
+        tests:
+          - not_null
+  - name: personal_information
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - personal_id
+            - personal_info_start_date
+    columns:
+      - name: personal_id
+      - name: personal_info_start_date
+        tests:
+          - not_null
+  - name: all_players_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - all_players_status_code
+            - all_players_status_start_date
+    columns:
+      - name: all_players_status_code
+      - name: all_players_status_start_date
+        tests:
+          - not_null
+  - name: disability_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - disability_status_code
+            - disability_status_start_date
+    columns:
+      - name: disability_status_code
+      - name: disability_status_start_date
+        tests:
+          - not_null
+  - name: special_accountability_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - special_accountability_type_code
+            - special_accountability_type_start_date
+    columns:
+      - name: special_accountability_type_code
+      - name: special_accountability_type_start_date
+        tests:
+          - not_null
+  - name: marital_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - marital_status_code
+            - marital_status_start_date
+    columns:
+      - name: marital_status_code
+      - name: marital_status_start_date
+        tests:
+          - not_null
+  - name: salutation
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - salutation_code
+            - salutation_start_date
+    columns:
+      - name: salutation_code
+      - name: salutation_start_date
+        tests:
+          - not_null
+  - name: language
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - language_code
+            - language_start_date
+    columns:
+      - name: language_code
+      - name: language_start_date
+        tests:
+          - not_null
+  - name: suffix
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - suffix_code
+            - suffix_start_date
+    columns:
+      - name: suffix_code
+      - name: suffix_start_date
+        tests:
+          - not_null
+  - name: biographical_information
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - personal_id
+    columns:
+      - name: personal_id
+        tests:
+          - not_null
+  - name: employment_details
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - personal_id
+            - user_id
+            - employment_details_start_date
+    columns:
+      - name: personal_id
+      - name: user_id
+      - name: employment_details_start_date
+        tests:
+          - not_null
+  - name: employment_termination_details
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - personal_id
+            - user_id
+            - employment_termination_details_end_date
+    columns:
+      - name: personal_id
+      - name: user_id
+      - name: employment_termination_details_end_date
+        tests:
+          - not_null
+  - name: job_level
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - job_level_code
+            - job_level_start_date
+    columns:
+      - name: job_level_code
+      - name: job_level_start_date
+        tests:
+          - not_null
+  - name: local_contract_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - local_contract_type_code
+            - local_contract_type_start_date
+    columns:
+      - name: local_contract_type_code
+      - name: local_contract_type_start_date
+        tests:
+          - not_null
+  - name: salary_review_calendar
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - salary_review_calendar_code
+            - salary_review_calendar_start_date
+    columns:
+      - name: salary_review_calendar_code
+      - name: salary_review_calendar_start_date
+        tests:
+          - not_null
+  - name: bonus_weighting
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - bonus_weighting_code
+            - bonus_weighting_start_date
+    columns:
+      - name: bonus_weighting_code
+      - name: bonus_weighting_start_date
+        tests:
+          - not_null
+  - name: home_host_designation
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - home_host_designation_code
+            - home_host_designation_start_date
+    columns:
+      - name: home_host_designation_code
+      - name: home_host_designation_start_date
+        tests:
+          - not_null
+  - name: position_relationship_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - position_relationship_type_code
+            - position_relationship_type_start_date
+    columns:
+      - name: position_relationship_type_code
+      - name: position_relationship_type_start_date
+        tests:
+          - not_null
+  - name: employee_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - employee_status_code
+            - employee_status_start_date
+    columns:
+      - name: employee_status_code
+      - name: employee_status_start_date
+        tests:
+          - not_null
+  - name: position_change_reason
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - position_change_reason_code
+            - position_change_reason_start_date
+    columns:
+      - name: position_change_reason_code
+      - name: position_change_reason_start_date
+        tests:
+          - not_null
+  - name: bonus_earning_eligibility
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - bonus_earning_eligibility_code
+            - bonus_earning_eligibility_start_date
+    columns:
+      - name: bonus_earning_eligibility_code
+      - name: bonus_earning_eligibility_start_date
+        tests:
+          - not_null
+  - name: probation_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - probation_status_code
+            - probation_status_start_date
+    columns:
+      - name: probation_status_code
+      - name: probation_status_start_date
+        tests:
+          - not_null
+  - name: yes_no_flag_referential
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - yes_no_flag_referential_code
+            - yes_no_flag_referential_start_date
+    columns:
+      - name: yes_no_flag_referential_code
+      - name: yes_no_flag_referential_start_date
+        tests:
+          - not_null
+  - name: competition_clause_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - competition_clause_status_code
+            - competition_clause_status_start_date
+    columns:
+      - name: competition_clause_status_code
+      - name: competition_clause_status_start_date
+        tests:
+          - not_null
+  - name: notice_period_number
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - notice_period_number_code
+            - notice_period_number_start_date
+    columns:
+      - name: notice_period_number_code
+      - name: notice_period_number_start_date
+        tests:
+          - not_null
+  - name: headcount
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - job_start_date
+            - headcount_type_code
+    columns:
+      - name: user_id
+      - name: job_start_date
+      - name: headcount_type_code
+        tests:
+          - not_null
+  - name: headcount_monthly
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - month
+            - year
+            - headcount_type_code
+    columns:
+      - name: user_id
+      - name: month
+      - name: year
+      - name: headcount_type_code
+        tests:
+          - not_null
+  - name: pay_component
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pay_component_code
+            - pay_component_start_date
+    columns:
+      - name: pay_component_code
+      - name: pay_component_start_date
+        tests:
+          - not_null
+  - name: pay_component_group
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pay_component_group_code
+            - pay_component_group_start_date
+    columns:
+      - name: pay_component_group_code
+      - name: pay_component_group_start_date
+        tests:
+          - not_null
+  - name: previous_experience
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - previous_experience_id
+            - previous_experience_start_date
+            - previous_experience_end_date
+    columns:
+      - name: previous_experience_id
+      - name: previous_experience_start_date
+        tests:
+          - not_null
+  - name: language_mastery
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - language_mastery_id
+            - language_mastery_start_date
+            - language_mastery_end_date
+    columns:
+      - name: language_mastery_id
+      - name: language_mastery_start_date
+        tests:
+          - not_null
+  - name: awards
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - award_id
+            - award_start_date
+            - award_end_date
+    columns:
+      - name: award_id
+      - name: award_start_date
+        tests:
+          - not_null
+  - name: documents
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - document_id
+            - document_version
+    columns:
+      - name: document_id
+      - name: document_version
+        tests:
+          - not_null
+  - name: document_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - document_status_code
+    columns:
+      - name: document_status_code
+        tests:
+          - not_null
+  - name: acknowledgment_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - acknowledgment_status_code
+            - acknowledgment_status_start_date
+    columns:
+      - name: acknowledgment_status_code
+      - name: acknowledgment_status_start_date
+        tests:
+          - not_null
+  - name: document_acknowledgment
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - acknowledgment_id
+            - acknowledgment_start_date
+    columns:
+      - name: acknowledgment_id
+      - name: acknowledgment_start_date
+        tests:
+          - not_null
+  - name: degree_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - degree_type_code
+            - degree_type_start_date
+    columns:
+      - name: degree_type_code
+      - name: degree_type_start_date
+        tests:
+          - not_null
+  - name: iso_country
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - iso_country_code
+            - iso_country_start_date
+    columns:
+      - name: iso_country_code
+      - name: iso_country_start_date
+        tests:
+          - not_null
+  - name: school
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - school_code
+            - school_start_date
+    columns:
+      - name: school_code
+      - name: school_start_date
+        tests:
+          - not_null
+  - name: user_security_domain
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - user_security_domain_start_date
+    columns:
+      - name: user_id
+      - name: user_security_domain_start_date
+        tests:
+          - not_null
+  - name: assignment_profile
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - assignment_profile_id
+            - assignment_profile_start_date
+    columns:
+      - name: assignment_profile_id
+      - name: assignment_profile_start_date
+        tests:
+          - not_null
+  - name: delivery_method
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - delivery_method_code
+            - delivery_method_start_date
+    columns:
+      - name: delivery_method_code
+      - name: delivery_method_start_date
+        tests:
+          - not_null
+  - name: enrollment_seat
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - enrollment_seat_id
+            - enrollment_seat_data_start_date
+    columns:
+      - name: enrollment_seat_id
+      - name: enrollment_seat_data_start_date
+        tests:
+          - not_null
+  - name: completion_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - completion_status_code
+            - completion_status_start_date
+    columns:
+      - name: completion_status_code
+      - name: completion_status_start_date
+        tests:
+          - not_null
+  - name: schedule
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schedule_id
+            - schedule_data_start_date
+    columns:
+      - name: schedule_id
+      - name: schedule_data_start_date
+        tests:
+          - not_null
+  - name: schedule_resources
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schedule_id
+            - schedule_resources_data_start_date
+    columns:
+      - name: schedule_id
+      - name: schedule_resources_data_start_date
+        tests:
+          - not_null
+  - name: learning_activity
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - item_code
+            - schedule_id
+            - completion_date
+            - completion_status_code
+            - total_hours
+    columns:
+      - name: user_id
+      - name: item_code
+        tests:
+          - not_null
+  - name: item
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - item_code
+            - item_data_start_date
+            - item_type_code
+            - item_revision_date
+    columns:
+      - name: item_code
+      - name: item_data_start_date
+      - name: item_type_code
+      - name: item_revision_date
+        tests:
+          - not_null
+  - name: job_role_org
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - learning_job_role_id
+    columns:
+      - name: user_id
+      - name: learning_job_role_id
+        tests:
+          - not_null
+  - name: race
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - race_id
+            - race_code
+            - race_start_date
+    columns:
+      - name: race_id
+      - name: race_code
+      - name: race_start_date
+        tests:
+          - not_null
+  - name: personal_information_local_usa
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - personal_id
+            - personal_info_usa_start_date
+    columns:
+      - name: personal_id
+      - name: personal_info_usa_start_date
+        tests:
+          - not_null
+  - name: job_mobility
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - headcount_line_id
+    columns:
+      - name: headcount_line_id
+        tests:
+          - not_null
+  - name: resignation_reasons
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - resignation_reason_code
+            - resignation_reason_start_date
+    columns:
+      - name: resignation_reason_code
+      - name: resignation_reason_start_date
+        tests:
+          - not_null
+  - name: termination_event_reasons
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - event_reasons_code
+    columns:
+      - name: event_reasons_code
+        tests:
+          - not_null
+  - name: assignment_profiles_item_mapping
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - item_code
+            - assignment_profile_id
+            - assignment_profiles_item_mapping_data_start_date
+    columns:
+      - name: item_code
+      - name: assignment_profile_id
+      - name: assignment_profiles_item_mapping_data_start_date
+        tests:
+          - not_null
+  - name: employee_profile_directory
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - personal_id
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+  - name: fact_lms_measure_completed_items
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - year
+            - month
+            - item_code
+            - business_unit_code
+    columns:
+      - name: year
+      - name: month
+      - name: item_code
+        tests:
+          - not_null
+  - name: time_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - time_type_code
+            - country_code
+    columns:
+      - name: time_type_code
+        tests:
+          - not_null
+  - name: employee_time
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - time_start_date
+            - time_type_code
+            - time_end_date
+            - approval_status
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+  - name: work_schedule
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - work_schedule_code
+            - work_schedule_start_date
+    columns:
+      - name: work_schedule_code
+        tests:
+          - not_null
+  - name: work_schedule_day
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - work_schedule_code
+            - day_number
+    columns:
+      - name: work_schedule_code
+        tests:
+          - not_null
+  - name: holiday_assignment
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - holiday_calendar_code
+            - date_of_holiday
+    columns:
+      - name: holiday_calendar_code
+        tests:
+          - not_null
+  - name: holiday_calendar
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - holiday_calendar_code
+            - country_code
+    columns:
+      - name: holiday_calendar_code
+        tests:
+          - not_null
+  - name: holiday_category
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - holiday_category_code
+    columns:
+      - name: holiday_category_code
+        tests:
+          - not_null
+  - name: cost_center_group
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cost_center_group_code
+            - cost_center_group_start_date
+    columns:
+      - name: cost_center_group_code
+        tests:
+          - not_null
+  - name: position_right_to_return
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - position_right_to_return_start_date
+            - position_code
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+  - name: work_schedule_day_model
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - work_schedule_day_model_code
+    columns:
+      - name: work_schedule_day_model_code
+        tests:
+          - not_null
+  - name: work_schedule_day_model_assignment
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - work_schedule_code
+            - day_number
+    columns:
+      - name: work_schedule_code
+      - name: day_number
+        tests:
+          - not_null
+  - name: organization
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - organization_id
+
+    columns:
+      - name: organization_id
+        tests:
+          - not_null
+  - name: assignment_package
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - assignment_package_id
+            - assignment_package_code
+            - assignment_package_start_date
+    columns:
+      - name: assignment_package_id
+      - name: assignment_package_code
+      - name: assignment_package_start_date
+        tests:
+          - not_null
+  - name: employee_global_assignment
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - global_assignment_start_date
+    columns:
+      - name: user_id
+      - name: global_assignment_start_date
+        tests:
+          - not_null
+  - name: global_assignment_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - global_assignment_type_id
+            - global_assignment_type_code
+            - global_assignment_type_start_date
+    columns:
+      - name: global_assignment_type_id
+      - name: global_assignment_type_code
+      - name: global_assignment_type_start_date
+        tests:
+          - not_null
+  - name: library
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - library_code
+            - domain_id
+    columns:
+      - name: library_code
+        tests:
+          - not_null
+      - name: domain_id
+        tests:
+          - not_null
+  - name: schedule_library
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - library_code
+            - schedule_id
+    columns:
+      - name: library_code
+      - name: schedule_id
+        tests:
+          - not_null
+  - name: schedule_formula
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - schedule_code
+            - finance_var_code
+            - currency_code
+    columns:
+      - name: schedule_id
+      - name: finance_var_id
+      - name: currency_code
+        tests:
+          - not_null
+  - name: item_formula
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - item_code
+            - item_type_code
+            - finance_var_id
+            - currency_code
+    columns:
+      - name: item_code
+      - name: item_type_code
+      - name: finance_var_id
+      - name: currency_code
+        tests:
+          - not_null
+  - name: item_library
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - library_code
+            - item_code
+            - item_type_code
+    columns:
+      - name: library_code
+      - name: item_code
+      - name: item_type_code
+        tests:
+          - not_null
+  - name: time_type_profile
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - time_type_profile_code
+            - time_type_profile_start_date
+    columns:
+      - name: time_type_profile_code
+      - name: time_type_profile_start_date
+        tests:
+          - not_null
+  - name: pay_component_mapping
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pay_component_group_code
+            - pay_component_code
+    columns:
+      - name: pay_component_group_code
+      - name: pay_component_code
+        tests:
+          - not_null
+
+  - name: employee_compensation
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - employee_compensation_information_start_date
+    columns:
+      - name: userid
+      - name: employee_compensation_information_start_date
+        tests:
+          - not_null
+  - name: pay_group
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pay_group_id
+    columns:
+      - name: pay_group_id
+        tests:
+          - not_null
+  - name: recruitment_sources
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - recruitment_sources_id
+            - recruitment_sources_code
+            - recruitment_sources_start_date
+    columns:
+      - name: recruitment_sources_id
+      - name: recruitment_sources_code
+      - name: recruitment_sources_start_date
+        tests:
+          - not_null
+  - name: onboarding_process_tasks
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - process_id
+            - task_id
+            - task_start_date
+    columns:
+      - name: process_id
+      - name: task_id
+      - name: task_start_date
+        tests:
+          - not_null
+  - name: employee_onboarding_information
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - process_id
+            - process_hires_status
+            - employee_onboarding_infos_start_date
+    columns:
+      - name: process_id
+      - name: process_hires_status
+      - name: employee_onboarding_infos_start_date
+        tests:
+          - not_null
+  - name: security_domain
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - security_domain_code
+            - security_domain_start_date
+    columns:
+      - name: security_domain_code
+      - name: security_domain_start_date
+        tests:
+          - not_null
+  - name: provider
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - provider_code
+            - provider_start_date
+    columns:
+      - name: provider_code
+      - name: provider_start_date
+        tests:
+          - not_null
+  - name: item_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - item_type_code
+            - item_type_start_date
+    columns:
+      - name: item_type_code
+      - name: item_type_start_date
+        tests:
+          - not_null
+  - name: requirement_type
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - requirement_type_code
+            - requirement_type_start_date
+    columns:
+      - name: requirement_type_code
+      - name: requirement_type_start_date
+        tests:
+          - not_null
+  - name: flsa_status
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flsa_status_code
+            - flsa_status_start_date
+    columns:
+      - name: flsa_status_code
+      - name: flsa_status_start_date
+        tests:
+          - not_null
+  - name: compensation_plan_eligibility
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - compensation_plan_eligibility_code
+            - compensation_plan_eligibility_start_date
+    columns:
+      - name: compensation_plan_eligibility_code
+      - name: compensation_plan_eligibility_start_date
+        tests:
+          - not_null
+  - name: pay_components_recurring
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pay_component_recurring_id
+            - user_id
+            - pay_component_id
+    columns:
+      - name: pay_component_recurring_id
+      - name: user_id
+      - name: pay_component_id
+        tests:
+          - not_null
+  - name: pay_components_non_recurring
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pay_components_non_recurring_id
+    columns:
+      - name: pay_components_non_recurring_id
+        tests:
+          - not_null
+  - name: one_profile_go_live_dates
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - company_code
+    columns:
+      - name: company_code
+        tests:
+          - not_null
+  - name: finance_organization
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - business_unit_code
+            - finance_organization_start_date
+    columns:
+      - name: business_unit_code
+      - name: finance_organization_start_date
+        tests:
+          - not_null
