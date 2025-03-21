@@ -1,0 +1,54 @@
+version: 2
+
+sources:
+  - name: landing_tables_PMG
+    description: 'Landing tables are defined here'
+    database: "{{ env_var('DBT_LANDING_DB') }}"
+    schema: "{{ env_var('DBT_LANDING_PMG_SCH') }}"
+    tables:
+      - name: FORM_CONTENT
+      - name: FORM_HEADER
+      - name: PE_PEOPLE_BUSINESS_GOALS
+      - name: PE_OVERALL_RATING
+      - name: PE_SIGNATURE_COMMENTS
+      - name: PE_COMMENTS
+      - name: YE_FORM_RATINGS
+      - name: YE_PEOPLE_BUSINESS_GOALS
+      - name: YE_OVERALL_RATING
+      - name: YE_SIGNATURE_COMMENTS
+      - name: YE_COMMENTS
+      - name: SGN_PEOPLE_BUSINESS
+      - name: SGN_OVERALL_RATING
+      - name: SGN_SIGNATURE_COMMENTS
+      - name: SGN_COMMENTS
+      - name: USER_GOAL_DETAILS
+      - name: PERF_GOAL_REPORT
+      - name: PARAM_PERF_GOALS_YEARS
+      - name: PE_COMMENTS_REPORT
+      - name: CAREER_RECOM_DETAILS
+      - name: CAREER_RECOM_HR_DETAILS
+      - name: USER_DEV_CAREER_DETAILS
+      - name: USER_DEV_GOAL_DETAILS
+      - name: DEV_GOAL_PLAN_TEMPLATE
+      - name: USER_LEARNING_GOAL_DETAILS
+      - name: DEV_GOAL_REPORT
+      - name: DEV_REPORT_TEST
+      - name: FORM_HEADER_DELETED_FULL
+      - name: PARAM_FORMS_YEARS
+      - name: PERF_GOAL_PLAN
+      - name: GOAL_PLAN_TEMPLATE
+  - name: landing_tables_CMN
+    description: 'Landing tables are defined here FOR COMMON'
+    database: "{{ env_var('DBT_LANDING_DB') }}"
+    schema: "{{ env_var('DBT_LANDING_CMN_SCH') }}"
+    tables:
+      - name: EMPLOYEE_PROFILE
+      - name: EMPLOYEE_MANAGER
+      - name: GROUP_USER
+      - name: SF_ROLES_GROUP
+      - name: PARAM_SF_ROLES
+      - name: RANGE
+      - name: COUNTRY_ZONES
+      - name: ROLE_DETAILS
+      - name: PARAM_ROLES_TAGS
+      - name: PARAM_TAGS_COLUMNS
