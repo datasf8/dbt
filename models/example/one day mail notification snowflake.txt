@@ -1,0 +1,213 @@
+use database HRDP_ADM_PD_DB;
+use schema IP_WL;
+show notification integrations;
+
+
+---CREATE notification integration
+create or replace notification integration TASK_NOTIFICATION
+  type=email
+  enabled=true
+  allowed_recipients=('VINOTHKUMAR.SATHIYAMOORTHI@LOREAL.COM')
+;
+
+show tasks;
+ALTER TASK HRDP_ACCOUNT_NETWORK_POLICY_TASK  RESUME;
+EXECUTE TASK HRDP_ACCOUNT_NETWORK_POLICY_TASK;
+select * from SNOWFLAKE.ACCOUNT_USAGE.TASK_HISTORY ;
+
+select *
+from
+        table(INFORMATION_SCHEMA.TASK_HISTORY(
+    ROOT_TASK_ID => '01b337a1-5771-ef31-0000-000000000025',
+SCHEDULED_TIME_RANGE_START => dateadd(day,-7,current_timestamp)::timestamp_ltz,
+    SCHEDULED_TIME_RANGE_END => current_timestamp()));
+
+
+
+create or replace function GET_TASK_GRAPH_RUN_SUMMARY_1_DAY(MY_ROOT_TASK_ID string)
+returns string
+as
+$$
+  (
+  select
+      ARRAY_AGG(OBJECT_CONSTRUCT(
+        'TASK_NAME', NAME,
+        'RUN_STATUS', STATE,
+        'RETURN_VALUE', RETURN_VALUE,
+        'STARTED', QUERY_START_TIME,
+        'DURATION', DURATION,
+        'ERROR_MESSAGE', ERROR_MESSAGE
+      )) as GRAPH_RUN_SUMMARY
+  from
+    (select
+        NAME,
+        case when STATE = 'SUCCEEDED' then '🟢 SUCCEEDED'
+             when STATE = 'FAILED' then '🔴 FAILED'
+             when STATE = 'SKIPPED' then '🔵 SKIPPED'
+             when STATE = 'CANCELLED' then '🔘 CANCELLED'
+        end as STATE,
+        RETURN_VALUE,
+        to_varchar(QUERY_START_TIME, 'YYYY-MM-DD HH24:MI:SS') as QUERY_START_TIME,
+        concat(timestampdiff('seconds', QUERY_START_TIME, COMPLETED_TIME), ' s') as DURATION,
+        ERROR_MESSAGE
+    from
+        table(INFORMATION_SCHEMA.TASK_HISTORY(
+    ROOT_TASK_ID => MY_ROOT_TASK_ID ::string,
+SCHEDULED_TIME_RANGE_START => dateadd(day,-1,current_timestamp)::timestamp_ltz,
+    SCHEDULED_TIME_RANGE_END => current_timestamp()
+      ))
+    order by
+        SCHEDULED_TIME)
+  )::string
+$$
+;
+
+create or replace function HTML_FROM_JSON_TASK_RUNS(JSON_DATA string)
+returns string
+language python
+runtime_version = '3.10'
+handler = 'GENERATE_HTML_TABLE'
+as
+$$
+import json
+
+
+def GENERATE_HTML_TABLE(JSON_DATA):
+    column_widths = ["320px", "120px", "400px", "160px", "80px", "480px"]
+
+    DATA = json.loads(JSON_DATA)
+
+    HTML = f"""
+        <img src="https://s26.q4cdn.com/463892824/files/doc_multimedia/HI_RES-_Snowflake_Logo_Blue_1800x550.jpg" alt="Snowflake logo" height="72">
+        <p><strong>Task Graph Run Summary</strong>
+        <br>Log in to Snowsight to see more details.</p>
+        <table border="1" style="border-color:#DEE3EA" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+    """
+    headers = [
+        "Task name",
+        "Run Status",
+         "Return Value",
+        "Started",
+        "Duration",
+        "Error Message",
+    ]
+    for i, header in enumerate(headers):
+        HTML += f'<th scope="col" style="text-align:left; width: {column_widths[i]}">{header.capitalize()}</th>'
+
+    HTML += """
+        </tr>
+    </thead>
+    <tbody>
+    """
+
+    for ROW_DATA in DATA:
+        HTML += "<tr>"
+        for header in headers:
+            key = header.replace(" ", "_").upper()
+            CELL_DATA = ROW_DATA.get(key, "")
+            HTML += f'<td style="text-align:left; width: {column_widths[headers.index(header)]}">{CELL_DATA}</td>'
+        HTML += "</tr>"
+
+    HTML += """
+  </tbody>
+  </table>
+  """
+
+    return HTML
+
+$$
+;
+
+CREATE or replace PROCEDURE FAIL_MAIL_NOTIFICATION_SP()
+RETURNS VARCHAR
+LANGUAGE SQL
+Execute as caller
+AS
+$$
+declare
+    MY_ROOT_TASK_ID string;
+   
+    SUMMARY_JSON string;
+    SUMMARY_HTML string;
+    SUBJECT string;
+    STATUS string;
+BEGIN
+	MY_ROOT_TASK_ID := (call SYSTEM$TASK_RUNTIME_INFO('CURRENT_ROOT_TASK_UUID'));
+    -- MY_ROOT_TASK_ID := '01b63572-9cc1-41d6-0000-00000000009f';
+	SUMMARY_JSON := (select GET_TASK_GRAPH_RUN_SUMMARY_1_DAY(:MY_ROOT_TASK_ID));
+	SUMMARY_HTML := (select HTML_FROM_JSON_TASK_RUNS(:SUMMARY_JSON));
+	SUBJECT := (select 'HRDP-PROD DAG run summary '||cast(current_timestamp(0) as string));
+	STATUS := (select case when  GET_TASK_GRAPH_RUN_SUMMARY_1_DAY(:MY_ROOT_TASK_ID) like '%FAIL%' THEN 'TRUE' ELSE 'NO FAIl' END AS A);
+	
+    IF (:STATUS = 'TRUE') THEN
+         
+        call SYSTEM$SEND_EMAIL(
+          'TASK_NOTIFICATION',
+          'VINOTHKUMAR.SATHIYAMOORTHI@LOREAL.COM',
+          :SUBJECT,
+          :SUMMARY_HTML,
+          'text/html');  
+
+    ELSE
+        RETURN 'Unexpected input.';
+    END IF;
+END;
+$$
+;
+
+CREATE OR REPLACE TASK MASTER_1_DAY_TASK
+  WAREHOUSE = HRDP_DBT_PREM_WH
+  SCHEDULE = 'USING CRON 0 * * * * UTC'
+  AS
+    SELECT 1;
+
+CREATE OR REPLACE TASK HRDP_OPEN_INTERNET_TASK
+  WAREHOUSE = HRDP_DBT_BASE_WH
+  AFTER MASTER_1_DAY_TASK
+  AS
+      call OPEN_INTERNET_ACCESS_SP('_TECH_OPEN_INTERNET_ACCESS_ROLE','HRDP_OPEN_NETWORK_POLICY','USER_OPEN_INTERNET_ACCESS'); 
+ 
+
+
+
+ create or replace task HRDP_OPEN_INTERNET_TASK_FIN
+warehouse = 'HRDP_DBT_PREM_WH'
+finalize = MASTER_1_DAY_TASK
+as
+      call FAIL_MAIL_NOTIFICATION_SP();
+
+    
+ --- WHEN IT SUCCEDS
+ALTER TASK HRDP_OPEN_INTERNET_TASK_FIN RESUME;
+ALTER TASK HRDP_OPEN_INTERNET_TASK RESUME;
+ALTER TASK MASTER_1_DAY_TASK RESUME;
+
+--- WHEN IT SUCCEDS
+ALTER TASK MASTER_1_DAY_TASK SUSPEND;
+ALTER TASK HRDP_OPEN_INTERNET_TASK SUSPEND;
+ALTER TASK HRDP_OPEN_INTERNET_TASK_FIN SUSPEND;
+
+-- Execute tasks
+
+EXECUTE TASK MASTER_1_DAY_TASK;
+
+     SELECT *
+  FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) where name='HRDP_OPEN_INTERNET_TASK'
+  ORDER BY SCHEDULED_TIME;
+
+      SELECT *
+  FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) where name='HRDP_OPEN_INTERNET_TASK_FIN'
+  ORDER BY SCHEDULED_TIME;
+
+     SELECT *
+  FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) where name='MASTER_1_DAY_TASK'
+  ORDER BY SCHEDULED_TIME;
+
+select * from HRDP_SDDS_NP_DB.BTDP_DS_C1_H08_LEARNING_EU_NP.ITEM_V2;
+
+select * from HRDP_SDDS_NP_DB.BTDP_DS_C1_H08_LEARNING_EU_NP.SCHEDULE_V2;
+
+
+drop table HRDP_STG_PD_DB.SDDS_STG_SCH.stg_mapping_skill_users;

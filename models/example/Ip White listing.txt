@@ -1,0 +1,638 @@
+CREATE or replace FILE FORMAT HRDP_PBI_IP_FF
+        TYPE = 'JSON'
+        COMPRESSION = 'AUTO'
+        ENABLE_OCTAL = FALSE
+        ALLOW_DUPLICATE = FALSE
+        STRIP_OUTER_ARRAY = TRUE
+        STRIP_NULL_VALUES = FALSE
+        IGNORE_UTF8_ERRORS = FALSE;
+
+  
+  --   create or replace stage GCS_LMS_STAGE
+  -- url = 'gcs://hrdp_data_dv/'
+  -- storage_integration = GCS_LMS_INT
+  -- file_format =JSON_FF ;
+
+        create or replace stage HRDP_PBI_IP_STAGE
+        file_format = HRDP_PBI_IP_FF
+        url ='gcs://hrdp_gcs_data_eu_pd/successfactors/POWER_BI_IP_LIST/'
+        STORAGE_INTEGRATION = GCS_INT_PD;
+
+        show stages in account; 
+        show storage integrations;
+        desc ;
+
+
+        ls @HRDP_LND_PD_DB.LRN_LND_SCH.GCS_INT_STAGE_PD/successfactors/POWER_BI_IP_LIST/azure_powerbi_ips.json;
+        ls @HRDP_ADM_PD_DB.IP_WL.HRDP_PBI_IP_STAGE/power_bi_ip_list.json;
+        
+        
+create or replace procedure pbi_dynamic_net_pol
+(SERVICETAG String, FILENAME STRING)
+ returns string not null
+ language javascript
+    Execute as caller as
+ $$
+
+   var sql_to_clean_json_file = `CREATE OR REPLACE TABLE AZUREDB(src variant) as select value as src from table(flatten(select parse_json($1):values from @HRDP_LND_DV_DB.LRN_LND_SCH.GCS_INT_STAGE_DV/successfactors/POWER_BI_IP_LIST/azure_powerbi_ips.json (file_format => 'MS_IP_JSON')));` ;
+
+   var statement1 = snowflake.createStatement( {sqlText:sql_to_clean_json_file} );
+   var result_set1 = statement1.execute();
+     // Uncomment the following line to see the generated statement.
+   //return sql_to_clean_json_file;
+   // Step 2. Transform the result into a table. Extract the IP address
+   // array into a string of comma-separated IP addresses for use in a Network
+// Policy.
+   var sql_to_extract_ips_and_service_tags = "";
+   var sql_to_extract_ips_and_service_tags = `create or replace table TAGS_IPS_RAGES
+    (SERVICE_TAGS string,REGIONS string,IP_Prefixes String)
+     as select src:id::string as
+           SERVICE_TAGS,src:region::string as REGIONS,concat
+                                               ('\\'',
+                     array_to_string(src:properties:addressPrefixes,
+                     '\\',\\''), '\\'')
+                    as IP_Prefixes from  AZUREDB;`;
+   var statement2 = snowflake.createStatement( {sqlText:sql_to_extract_ips_and_service_tags} );
+   var result_set2 = statement2.execute();
+    // Uncomment the following line to see the generated statement:
+    //return sql_to_extract_ips_and_service_tags;
+   // Step 3. Ignore IPV6 and Get the list of IPv4 to be inserted into the service tag Network Policy.
+   var sql_to_get_list_of_service_ips = "";
+   var sql_to_get_list_of_service_ips = `select split_part(IP_Prefixes, ',\\'2603:',1) as IPS from HRDP_ADM_DV_DB.SF_MONITOR_SCH.TAGS_IPS_RAGES where SERVICE_TAGS='` + SERVICETAG + `' limit 1;`;
+   var statement3 = snowflake.createStatement( {sqlText: sql_to_get_list_of_service_ips} );
+   var result_set3 = statement3.execute();
+    var get_the_first_row = result_set3.next();
+   var ips_column_name = "IPS"
+   var quota_separated_list_of_ips = result_set3.getColumnValue(ips_column_name);
+   // Uncomment the following line to see the generated statement:
+   //return quota_separated_list_of_ips;
+   // Step 4. Create the Network Policy for that service tag without activating it.
+   // Only activate the Network Policy after verifying it!
+   var sql_to_create_network_policy = "";
+   var sql_to_create_network_policy = `create network policy
+                             azure_network_policy_for_` + SERVICETAG + `
+                                       ALLOWED_IP_LIST =
+                                   (` + quota_separated_list_of_ips + `);`
+   var statement4 = snowflake.createStatement( {sqlText:sql_to_create_network_policy});
+    try {  
+        statement4.execute();
+        return sql_to_create_network_policy;
+        }
+        catch (err)  
+        {
+        var sql_to_alter_network_policy = `alter network policy
+                             azure_network_policy_for_` + SERVICETAG + `
+                                   set    ALLOWED_IP_LIST =
+                                   (` + quota_separated_list_of_ips + `);`
+        var statement5 = snowflake.createStatement( {sqlText:sql_to_alter_network_policy});
+        statement5.execute();
+        return sql_to_alter_network_policy;
+        }
+    
+$$;
+
+
+call pbi_dynamic_net_pol('PowerBI','power_bi_ip_list.json');
+
+ALTER USER DBT SERVICE ACCOUNT SET NETWORK_POLICY=<DBT_POLICY>;
+
+
+
+---- new --
+
+
+create or replace procedure pbi_dynamic_net_pol
+(SERVICETAG String, FILENAME STRING)
+returns string not null
+language javascript
+    Execute as caller as
+$$
+   var sql_to_clean_json_file = `CREATE OR REPLACE TABLE AZUREDB(src variant) as select value as src from table(flatten(select parse_json($1):values from @PBI_IP_STAGE/` + FILENAME +` (file_format => 'PBI_IP_JSON_FF')));` ;
+   var statement1 = snowflake.createStatement( {sqlText:sql_to_clean_json_file} );
+   var result_set1 = statement1.execute();
+     // Uncomment the following line to see the generated statement.
+   //return sql_to_clean_json_file;
+   // Step 2. Transform the result into a table. Extract the IP address
+   // array into a string of comma-separated IP addresses for use in a Network
+// Policy.
+   var sql_to_extract_ips_and_service_tags = "";
+   var sql_to_extract_ips_and_service_tags = `create or replace table TAGS_IPS_RAGES
+    (SERVICE_TAGS string,REGIONS string,IP_Prefixes String)
+     as select src:id::string as
+           SERVICE_TAGS,src:region::string as REGIONS,concat
+                                               ('\\'',
+                     array_to_string(src:properties:addressPrefixes,
+                     '\\',\\''), '\\'')
+                    as IP_Prefixes from  AZUREDB;`;
+   var statement2 = snowflake.createStatement( {sqlText:sql_to_extract_ips_and_service_tags} );
+   var result_set2 = statement2.execute();
+    // Uncomment the following line to see the generated statement:
+    //return sql_to_extract_ips_and_service_tags;
+   // Step 3. Ignore IPV6 and Get the list of IPv4 to be inserted into the service tag Network Policy.
+   var sql_to_get_list_of_service_ips = "";
+   var sql_to_get_list_of_service_ips = `select split_part(IP_Prefixes, ',\\'2603:',1) as IPS from TAGS_IPS_RAGES where SERVICE_TAGS='` + SERVICETAG + `' limit 1;`;
+   var statement3 = snowflake.createStatement( {sqlText: sql_to_get_list_of_service_ips} );
+   var result_set3 = statement3.execute();
+    var get_the_first_row = result_set3.next();
+   var ips_column_name = "IPS"
+   var quota_separated_list_of_ips = result_set3.getColumnValue(ips_column_name);
+   // Uncomment the following line to see the generated statement:
+   //return quota_separated_list_of_ips;
+   // Step 4. Create the Network Policy for that service tag without activating it.
+   // Only activate the Network Policy after verifying it!
+   var sql_to_create_network_policy = "";
+   var sql_to_create_network_policy = `create network policy
+                             azure_network_policy_for_` + SERVICETAG + `
+                                       ALLOWED_IP_LIST =
+                                   (` + quota_separated_list_of_ips + `);`
+   var statement4 = snowflake.createStatement( {sqlText:sql_to_create_network_policy});
+    try {  
+        statement4.execute();
+        return sql_to_create_network_policy;
+        }
+        catch (err)  
+        {
+        var sql_to_alter_network_policy = `alter network policy
+                             azure_network_policy_for_` + SERVICETAG + `
+                                   set    ALLOWED_IP_LIST =
+                                   (` + quota_separated_list_of_ips + `);`
+        var statement5 = snowflake.createStatement( {sqlText:sql_to_alter_network_policy});
+        statement5.execute();
+        return sql_to_alter_network_policy;
+        }
+$$;
+
+
+select distinct CLIENT_IP from snowflake.account_usage.login_history
+where event_timestamp>'2023-12-11'
+and REPORTED_CLIENT_TYPE='ODBC_DRIVER'
+
+
+
+--- changes on 15-02
+
+CREATE or replace FILE FORMAT HRDP_PBI_IP_FF
+        TYPE = 'JSON'
+        COMPRESSION = 'AUTO'
+        ENABLE_OCTAL = FALSE
+        ALLOW_DUPLICATE = FALSE
+        STRIP_OUTER_ARRAY = TRUE
+        STRIP_NULL_VALUES = FALSE
+        IGNORE_UTF8_ERRORS = FALSE;
+
+  
+  --   create or replace stage GCS_LMS_STAGE
+  -- url = 'gcs://hrdp_data_dv/'
+  -- storage_integration = GCS_LMS_INT
+  -- file_format =JSON_FF ;
+
+        create or replace stage HRDP_PBI_IP_STAGE
+        file_format = HRDP_PBI_IP_FF
+        url ='gcs://hrdp_gcs_data_eu_pd/successfactors/POWER_BI_IP_LIST/'
+        STORAGE_INTEGRATION = GCS_INT_PD;
+
+        show stages in account; 
+        show storage integrations;
+        desc ;
+
+
+        ls @HRDP_LND_PD_DB.LRN_LND_SCH.GCS_INT_STAGE_PD/successfactors/POWER_BI_IP_LIST/azure_powerbi_ips.json;
+        ls @HRDP_ADM_PD_DB.IP_WL.HRDP_PBI_IP_STAGE/power_bi_ip_list.json;
+        
+
+--   loading the file for power bi, 
+
+select * from AZUREDB;
+select * from AZURE_TAGS_IP_RANGES;
+
+create or replace procedure extract_azure_ips_sp
+(FILENAME STRING)
+returns string not null
+language javascript
+    Execute as caller as
+$$
+   var sql_to_clean_json_file = `CREATE OR REPLACE TABLE AZUREDB(src variant) as select value as src from table(flatten(select parse_json($1):values from @HRDP_PBI_IP_STAGE/` + FILENAME +` (file_format => 'HRDP_PBI_IP_FF')));` ;
+   var statement1 = snowflake.createStatement( {sqlText:sql_to_clean_json_file} );
+   var result_set1 = statement1.execute();
+     // Uncomment the following line to see the generated statement.
+   //return sql_to_clean_json_file;
+   // Step 2. Transform the result into a table. Extract the IP address
+   // array into a string of comma-separated IP addresses for use in a Network
+// Policy.
+   var sql_to_extract_ips_and_service_tags = "";
+   var sql_to_extract_ips_and_service_tags = `create or replace table AZURE_TAGS_IP_RANGES
+    (SERVICE_TAGS string,REGIONS string,IP_Prefixes String)
+     as select src:id::string as
+           SERVICE_TAGS,src:region::string as REGIONS,concat
+                                               ('\\'',
+                     array_to_string(src:properties:addressPrefixes,
+                     '\\',\\''), '\\'')
+                    as IP_Prefixes from  AZUREDB;`;
+   var statement2 = snowflake.createStatement( {sqlText:sql_to_extract_ips_and_service_tags} );
+   var result_set2 = statement2.execute();
+   return "success";
+$$;
+
+call extract_azure_ips_sp('power_bi_ip_list.json'); 
+
+
+----account level 
+
+Create or replace table IPS_OTHER_APPS
+(
+APP_NAME varchar,
+IP varchar(100),
+UPDATED_BY varchar default current_user,
+UPDATED_TS timestamp default current_timestamp
+
+);
+select * from IPS_OTHER_APPS;
+
+insert into IPS_OTHER_APPS (app_name,ip)
+values  ('DBT','52.45.144.63')
+,('DBT','54.81.134.249')
+,('DBT','52.22.161.231')
+,('DBT','52.3.77.232')
+,('DBT','3.214.191.130')
+,('DBT','34.233.79.135');
+
+
+create or replace procedure account_level_net_pol -- to get all the pbi ip's and union all the ip's from IPS_OTHER_APPS table
+(SERVICETAG varchar
+,DRIVING_TABLE varchar)
+returns string not null
+language javascript
+    Execute as caller as
+$$
+   // Checking for no null IPS for PBI
+   var count_PBI=`select count(*) from AZURE_TAGS_IP_RANGES where SERVICE_TAGS='` + SERVICETAG + `'`;
+   var statement_count_1 = snowflake.createStatement( {sqlText: count_PBI} ).execute();
+      while (statement_count_1.next()) {
+         var count_numb1 = statement_count_1.getColumnValue(1);
+         try {
+        if ( count_numb1 === 0 ) {
+            throw `No IPs in table for ` + SERVICETAG + `;`;
+        } else {
+        }
+    } catch (err) {
+        throw err;
+      }}
+   // Checking for no null IPS for DBT
+    var count_DBT=`select count(*) from ` + DRIVING_TABLE +`;`;
+   var statement_count_2 = snowflake.createStatement( {sqlText: count_DBT} ).execute();
+   while (statement_count_2.next()) {
+         var count_numb2 = statement_count_2.getColumnValue(1);
+         try {
+        if ( count_numb2 === 0 ) {
+            throw `No IPs in table ` + DBT_TABLE +` ;`
+        } else {
+        }
+    } catch (err) {
+        throw err;
+      }}
+   // Ignore IPV6 and Get the list of IPv4 to be inserted into the service tag Network Policy.
+   // Plus Merge IPs from DBT
+   var sql_to_get_list_of_service_ips = "";
+ var sql_to_get_list_of_service_ips = `select LISTAGG(IPS, ',') as IPS from (select split_part(IP_Prefixes, ',\\'2603:',1) as IPS from AZURE_TAGS_IP_RANGES where SERVICE_TAGS='` + SERVICETAG + `' union select '\\''||LISTAGG(trim(IP),'\\',\\'')||'\\'' as IPS from ` + DRIVING_TABLE +` );`;
+   var statement1 = snowflake.createStatement( {sqlText: sql_to_get_list_of_service_ips} );
+   var result_set1 = statement1.execute();
+   var get_the_first_row = result_set1.next();
+   var ips_column_name = "IPS"
+   var quota_separated_list_of_ips = result_set1.getColumnValue(ips_column_name);
+   // Uncomment the following line to see the generated statement:
+   //return quota_separated_list_of_ips;
+   // Create the Network Policy for that service tag without activating it.
+   // Only activate the Network Policy after verifying it!
+   var sql_to_create_network_policy = "";
+   var sql_to_create_network_policy = `create network policy ACCOUNT_NETWORK_POLICY ALLOWED_IP_LIST =
+                                   (` + quota_separated_list_of_ips + `);`
+   var statement2 = snowflake.createStatement( {sqlText:sql_to_create_network_policy});
+    try {  
+        statement2.execute();
+        return sql_to_create_network_policy;
+        }
+        catch (err)  
+        {
+        var sql_to_alter_network_policy = `alter network policy ACCOUNT_NETWORK_POLICY set ALLOWED_IP_LIST =
+                                   (` + quota_separated_list_of_ips + `);`
+        var statement3 = snowflake.createStatement( {sqlText:sql_to_alter_network_policy});
+        statement3.execute();
+        return sql_to_alter_network_policy;
+        }
+        $$;
+
+call account_level_net_pol('PowerBI','IPS_OTHER_APPS');
+
+CREATE OR REPLACE TASK HRDP_ACCOUNT_NETWORK_POLICY_TASK
+  WAREHOUSE = HRDP_DBT_BASE_WH
+  SCHEDULE = 'USING CRON 0 0/3 * * MON UTC'
+  AS
+    call account_level_net_pol('PowerBI','IPS_OTHER_APPS');
+
+    show tasks;
+
+     ALTER TASK HRDP_ACCOUNT_NETWORK_POLICY_TASK RESUME;
+
+      SELECT *
+  FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY()) --where name='HRDP_ACCOUNT_NETWORK_POLICY_TASK'
+  ORDER BY SCHEDULED_TIME;
+
+
+
+show security integrations;
+desc security integration AAD_PROVISIONING;
+alter security integration aad_provisioning set network_policy ='HRDP_OPEN_NETWORK_POLICY' ;
+
+SHOW PARAMETERS LIKE 'network_policy' IN USER 'VINOTHKUMAR.SATHIYAMOORTHI@LOREAL.COM';
+SHOW PARAMETERS LIKE 'network_policy' IN USER SFPYTHON_DV;
+
+
+
+
+------------ PBI White listing ends
+
+------ starts
+
+
+show grants on role _TECH_OPEN_INTERNET_ACCESS_ROLE;
+describe user NETWORK_USER;
+
+ALTER USER HRDP_DBT_NP SET NETWORK_POLICY=HRDP_DBT_NETWORK_POLICY;
+ALTER USER HRDP_DBT_PD SET NETWORK_POLICY=HRDP_DBT_NETWORK_POLICY;
+ALTER USER SF_DBT_NP_SA SET NETWORK_POLICY=HRDP_AIRFLOW_NP_NETWORK_POLICY; 
+ALTER USER SF_DBT_PD_SA SET NETWORK_POLICY=HRDP_AIRFLOW_NP_NETWORK_POLICY;
+ALTER USER HRDP_DBT_QA SET NETWORK_POLICY=DBT_NETWORK_POLICY;
+ALTER USER SFPYTHON_DV SET NETWORK_POLICY=AIRFLOW_DV_NETWORK_POLICY;
+ALTER USER SFPYTHON_QA SET NETWORK_POLICY=AIRFLOW_QA_NETWORK_POLICY;
+
+ALTER USER HRDP_DBT_NP SET NETWORK_POLICY=DBT_NETWORK_POLICY;
+
+ALTER USER SF_DBT_NP_SA SET NETWORK_POLICY=AIRFLOW_NP_NETWORK_POLICY;
+
+ALTER USER SF_DBT_PD_SA SET NETWORK_POLICY=HRDP_AIRFLOW_PD_NETWORK_POLICY;
+
+show security integrations;
+desc security integration AAD_PROVISIONING;
+
+
+
+
+
+SHOW PARAMETERS LIKE 'network_policy' IN USER HRDP_DBT_PD;
+SHOW PARAMETERS LIKE 'network_policy' IN USER HRDP_DBT_NP;
+
+
+
+CREATE OR REPLACE PROCEDURE OPEN_IP_ADMIN_SP(
+    DRIVING_ROLE varchar,
+    NETWORK_POLICY varchar
+  )
+  RETURNS varchar
+  LANGUAGE JAVASCRIPT
+  
+  COMMENT = 'SP used to whitelist the users associated to a set of roles'
+  execute as caller
+  AS    
+$$  
+//Creating Variables
+let v_driving_role = DRIVING_ROLE;
+let v_network_policy = NETWORK_POLICY ;
+
+//Sql command to join Account usage user to role, to list of users 
+let v_return_users_sql = `with hierarchy as 
+            (select 
+                  name as parent_id ,
+                  name        as child_id ,
+                   1 level,
+                  array_construct(child_id) path,
+                  name as top_role
+           from   snowflake.account_usage.roles  r
+           where deleted_on is null
+           union all 
+           select 
+                  pc.grantee_name ,
+                  pc.name , 
+                  h.level+1 level ,
+                  array_cat(h.path, array_construct(pc.name)) path,
+                  h.top_role
+          from snowflake.account_usage.grants_to_roles pc
+          join hierarchy h
+          on h.child_id = pc.grantee_name
+          where not array_contains(pc.name::variant ,h.path)  --eliminate circular references
+          and granted_on = 'ROLE' 
+          and granted_to = 'ROLE' 
+          and privilege = 'USAGE'
+          and deleted_on is null) 
+          select distinct 'ALTER USER "'||GRANTEE_NAME||'" SET NETWORK_POLICY = '||'` + v_network_policy + `'
+          from hierarchy h
+           join snowflake.account_usage.grants_to_users gtu
+              on h.top_role = gtu.role
+          where CHILD_ID='` + v_driving_role + `'
+          and DELETED_ON IS NULL
+          and GRANTEE_NAME like '%@LOREAL.COM'
+          and level<3
+          ;`;
+
+//Execute sql to get list of distinct Users
+let v_return_users =  snowflake.execute( {sqlText: v_return_users_sql} );
+
+//Looping through the Users
+ while (v_return_users.next()) {
+ 
+
+  let v_user_whitelisting = v_return_users.getColumnValue(1);
+  snowflake.execute( {sqlText: v_user_whitelisting} ) 
+
+ }
+
+ return "Success"
+
+$$;
+
+
+call OPEN_IP_ADMIN_SP('_TECH_OPEN_INTERNET_ACCESS_ROLE','BREAKGLASS_NET_POL');
+
+desc user "STEFANIA.PEDERIVA@LOREAL.COM";
+SHOW PARAMETERS LIKE 'network_policy' IN USER "NACEUR.BENSAYAH@LOREAL.COM";
+
+select * from   snowflake.account_usage.roles where name='HRDP_DATA_QUALITY_ROLE';
+select * from snowflake.account_usage.grants_to_roles where grantee_name='HRDP_DATA_QUALITY_ROLE';
+select * from snowflake.account_usage.grants_to_users where role='HRDP_DATA_QUALITY_ROLE' and grantee_name like '%TRIS%';
+
+with hierarchy as 
+            (select 
+                  name as parent_id ,
+                  name        as child_id ,
+                   1 level,
+                  array_construct(child_id) path,
+                  name as top_role
+           from   snowflake.account_usage.roles  r
+           where deleted_on is null
+           union all 
+           select 
+                  pc.grantee_name ,
+                  pc.name , 
+                  h.level+1 level ,
+                  array_cat(h.path, array_construct(pc.name)) path,
+                  h.top_role
+          from snowflake.account_usage.grants_to_roles pc
+          join hierarchy h
+          on h.child_id = pc.grantee_name
+          where not array_contains(pc.name::variant ,h.path)  --eliminate circular references
+          and granted_on = 'ROLE' 
+          and granted_to = 'ROLE' 
+          and privilege = 'USAGE'
+          and deleted_on is null) 
+          select distinct 'ALTER USER "'||GRANTEE_NAME||'" SET NETWORK_POLICY = '||'BREAKGLASS_POL'
+          from hierarchy h
+           join snowflake.account_usage.grants_to_users gtu
+              on h.top_role = gtu.role
+          where CHILD_ID='_TECH_OPEN_INTERNET_ACCESS_ROLE' 
+          and DELETED_ON IS NULL
+          and GRANTEE_NAME ilike '%@loreal.com'
+          and level<3;
+
+
+
+          ---- changes of 15-02
+
+          use database HRDP_ADM_PD_DB;
+          create schema IP_WL;
+
+
+          Create or replace table USER_OPEN_INTERNET_ACCESS
+(USER_NAME VARCHAR,
+APPLIED_TS TIMESTAMP(0)); -- to know when the user got access
+
+select * from USER_OPEN_INTERNET_ACCESS;
+
+
+--- fetch all the user with the hierarchy (n-1) and apply the policy 
+-- if it is in the driving table not in azure ad and doing the comparision
+CREATE OR REPLACE PROCEDURE OPEN_INTERNET_ACCESS_SP(
+    DRIVING_ROLE varchar,
+    NETWORK_POLICY varchar,
+    DRIVING_TABLE varchar
+  )
+  RETURNS varchar
+  LANGUAGE JAVASCRIPT
+  COMMENT = 'SP used to whitelist the users associated to a set of roles'
+  AS    
+$$  
+//Creating Variables
+let v_driving_role = DRIVING_ROLE;
+let v_network_policy = NETWORK_POLICY ;
+let v_driving_table = DRIVING_TABLE ;
+//Sql command to join Account usage user to role, to list of users 
+let v_return_users_sql = `with hierarchy as 
+            (select 
+                  name as parent_id ,
+                  name        as child_id ,
+                   1 level,
+                  array_construct(child_id) path,
+                  name as top_role
+           from   snowflake.account_usage.roles  r
+           where deleted_on is null
+           union all 
+           select 
+                  pc.grantee_name ,
+                  pc.name , 
+                  h.level+1 level ,
+                  array_cat(h.path, array_construct(pc.name)) path,
+                  h.top_role
+          from snowflake.account_usage.grants_to_roles pc
+          join hierarchy h
+          on h.child_id = pc.grantee_name
+          where not array_contains(pc.name::variant ,h.path)  
+          and granted_on = 'ROLE' 
+          and granted_to = 'ROLE' 
+          and privilege = 'USAGE'
+          and deleted_on is null) ,
+          final as (
+          select distinct GRANTEE_NAME,
+          'INSERT INTO ` + v_driving_table +` VALUES (\\''||GRANTEE_NAME||'\\', current_timestamp(0));' as INSERT_U,
+          'ALTER USER "'||GRANTEE_NAME||'" SET NETWORK_POLICY='||'` + v_network_policy + `' as SET_P
+          from hierarchy h
+           join snowflake.account_usage.grants_to_users gtu  
+              on h.top_role = gtu.role
+          where CHILD_ID='` + v_driving_role + `'
+          and DELETED_ON IS NULL
+          and GRANTEE_NAME ilike '%@LOREAL.COM'
+          and level<3)
+          select 
+          coalesce(INSERT_U,'DELETE FROM ` + v_driving_table +` WHERE USER_NAME=\\''||USER_NAME||'\\'')
+          ,coalesce(SET_P,'ALTER USER "'||USER_NAME||'" UNSET NETWORK_POLICY ') as statement
+          from final f
+          full join ` + v_driving_table +` d
+          ON f.GRANTEE_NAME=d.USER_NAME
+          where f.GRANTEE_NAME is null
+          or d.USER_NAME is null;
+          ;`;
+         
+//Execute sql to get list of distinct Users
+let v_return_users =  snowflake.execute( {sqlText: v_return_users_sql} );
+
+//Looping through the Users
+ while (v_return_users.next()) {
+ 
+
+  let v_user_whitelisting = v_return_users.getColumnValue(2);
+  snowflake.execute( {sqlText: v_user_whitelisting} ) 
+
+    let v_user_table = v_return_users.getColumnValue(1);
+  snowflake.execute( {sqlText: v_user_table} ) 
+
+ }
+
+ return "Success"
+
+$$;
+
+call OPEN_INTERNET_ACCESS_SP('_TECH_OPEN_INTERNET_ACCESS_ROLE','HRDP_OPEN_NETWORK_POLICY','USER_OPEN_INTERNET_ACCESS'); -- role,policy,table
+--- if any new user added or old user deleted we can get the user in this driving table after 30 mins.
+
+CREATE OR REPLACE TASK HRDP_OPEN_INTERNET_TASK
+  WAREHOUSE = HRDP_DBT_BASE_WH
+  SCHEDULE = '60 MINUTE'
+  AS
+    call OPEN_INTERNET_ACCESS_SP('_TECH_OPEN_INTERNET_ACCESS_ROLE','HRDP_OPEN_NETWORK_POLICY','USER_OPEN_INTERNET_ACCESS'); 
+
+    select * from snowflake.account_usage.grants_to_users where grantee_name='dgrh.powerbi@loreal.com';
+
+    ALTER TASK HRDP_OPEN_INTERNET_TASK RESUME;
+    show tasks;
+
+    SELECT *
+  FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY())
+  ORDER BY SCHEDULED_TIME desc;
+
+  select current_time();
+
+    SELECT query_text, completed_time
+FROM snowflake.account_usage.task_history
+ORDER BY completed_time DESC
+LIMIT 10;
+
+
+
+select * from USER_OPEN_INTERNET_ACCESS;
+
+SHOW PARAMETERS LIKE 'network_policy' IN USER "SARA.ZAKI@LOREAL.COM";
+SHOW PARAMETERS LIKE 'network_policy' IN USER "TRISTAN.JULES@LOREAL.COM";
+
+
+CREATE NETWORK POLICY HRDP_AIRFLOW_NP_NETWORK_POLICY ALLOWED_IP_LIST=('34.34.135.114','35.195.47.69') BLOCKED_IP_LIST=() COMMENT='Airflow NP IP\'s';
+CREATE NETWORK POLICY HRDP_DBT_NETWORK_POLICY ALLOWED_IP_LIST=('52.45.144.63', '54.81.134.249', '52.22.161.231', '52.3.77.232', '3.214.191.130',  '34.233.79.135') BLOCKED_IP_LIST=() COMMENT='DBT NP/PD IP\'s';
+
+ALTER USER HRDP_DBT_NP SET NETWORK_POLICY=HRDP_DBT_NETWORK_POLICY;
+ALTER USER HRDP_DBT_PD SET NETWORK_POLICY=HRDP_DBT_NETWORK_POLICY;
+
+ALTER USER SF_DBT_NP_SA SET NETWORK_POLICY=HRDP_AIRFLOW_NP_NETWORK_POLICY; 
+
+ALTER USER SF_DBT_PD_SA SET NETWORK_POLICY=HRDP_AIRFLOW_PD_NETWORK_POLICY; -- need to get ip's from mahesh for PD region.
+
+
+SHOW PARAMETERS LIKE 'network_policy' IN USER "dgrh.powerbi@loreal.com"; 
+
+
+
