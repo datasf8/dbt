@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: dim_class
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - class_sk
+    columns:
+      - name: class_sk
+        tests:
+          - not_null
+  - name: dim_item
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - item_sk
+    columns:
+      - name: item_sk
+        tests:
+          - not_null
+  - name: dim_learning_administrator
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - learning_administrator_sk
+    columns:
+      - name: learning_administrator_sk
+        tests:
+          - not_null
+  - name: fact_dq_missing_completion
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - class_sk
+            - item_sk
+            - user_id
+            - completion_status
+            - completion_date
+            - learning_administrator_sk
+    columns:
+      - name: class_sk
+        tests:
+          - not_null
+  - name: fact_dq_inaccurate_history
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+            - item_sk
+            - class_sk
+            - completion_date
+            - completion_status
+            - item_duration
+            - learning_administrator_sk

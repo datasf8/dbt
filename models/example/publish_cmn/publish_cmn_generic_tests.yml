@@ -1,0 +1,159 @@
+version: 2
+
+models:
+  - name: dim_date
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date
+    columns:
+      - name: date
+        tests:
+          - not_null
+  - name: dim_employee_profile_v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user_id
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+  - name: dim_organization_bycompany
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - company_code
+    columns:
+      - name: company_code
+        tests:
+          - not_null
+  - name: dim_employee_v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - personal_id
+            - user_id
+            - employee_start_date
+    columns:
+      - name: user_id
+        tests:
+          - not_null
+  - name: dim_organization_v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cost_center_code
+            - organization_start_date
+    columns:
+      - name: cost_center_code
+      - name: organization_start_date
+        tests:
+          - not_null
+  - name: dim_position_v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - position_code
+            - position_start_date
+    columns:
+      - name: position_code
+      - name: position_start_date
+        tests:
+          - not_null
+  - name: dim_headcount_type_v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - headcount_type_code
+    columns:
+      - name: headcount_type_code
+        tests:
+          - not_null
+  - name: fact_turnover
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - headcount_line_id
+    columns:
+      - name: headcount_line_id
+        tests:
+          - not_null
+  - name: fact_headcount_v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - headcount_line_id
+            - headcount_date
+    columns:
+      - name: headcount_line_id
+      - name: headcount_date
+        tests:
+          - not_null
+  - name: fact_recruitment
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - headcount_line_id
+    columns:
+      - name: headcount_line_id
+        tests:
+          - not_null
+  - name: dim_range_v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - range_sk
+    columns:
+      - name: range_sk
+      - name: range_type
+      - name: range_start
+      - name: range_end
+        tests:
+          - not_null
+  - name: dim_job
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - job_sk
+    columns:
+      - name: user_id
+      - name: job_start_date
+      - name: sequence_number
+        tests:
+          - not_null
+  - name: dim_employee_manager_v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - month_sk
+            - user_id
+            - manager_level
+    columns:
+      - name: month_sk
+      - name: user_id
+      - name: manager_level
+        tests:
+          - not_null
+  - name: fact_position_management_v1
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - position_code
+            - position_month_sk
+    columns:
+      - name: position_code
+      - name: position_month_sk
+        tests:
+          - not_null
+  - name: fact_position
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - position_code
+            - position_start_date
+    columns:
+      - name: position_code
+      - name: position_start_date
+        tests:
+          - not_null
